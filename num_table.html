@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <input type="number" id="tableNum" placeholder="enter the number">
+        <button onclick="showTable()">show table</button>
+        <div id="tableOut"></div>
+        <script>
+            function showTable(){
+                let n = parseInt(document.getElementById('tableNum').value);
+                let out = document.getElementById('tableOut');
+
+                if(isNaN(n)||n<1){
+                    out.textContent='please enter a valid number';
+                    return;
+                }
+                let result = '';
+
+                for(let i=1;i<=10;i++){
+                    result += `${n} x ${i} =${n*i}<br>`;
+                 }
+                 out.innerHTML=result;
+            }
+        </script>
+    </body>
+</html>

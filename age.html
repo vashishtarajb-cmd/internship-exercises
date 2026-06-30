@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+<p id="msg">watch me change</p>
+<button onclick="makeRed()">make red</button>
+<button onclick="makeBig()">make big</button>
+<button onclick="reset()">reset</button>
+<script>
+    let age = 20;
+    if(age>=18){
+        console.log('you are an adult.');
+    }else{
+        console.log('you are a minor');
+    }
+    function makeRed(){
+        document.getElementById('msg').style.color='red';
+
+    }
+    function makeBig(){
+        document.getElementById('msg').style.fontSize='32px';
+    }
+    function reset(){
+        let el= document.getElementById('msg');
+        el.style.color='black';
+        el.style.fontSize='16px';
+    }
+</script>
+
+
+</body>
+</html>
+

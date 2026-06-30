@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <body>
+
+<h2>My To-Do List</h2>
+
+<input
+type="text"
+id="newItem"
+placeholder="Enter a task">
+
+<button onclick="addItem()">Add Item</button>
+
+<hr>
+
+<ul id="myList"></ul>
+<script>
+  let items = ["Buy milk", "Read a book", "Walk 30 min"];
+
+  function renderList() {
+    let ul = document.getElementById("myList");
+    ul.innerHTML = "";          // clear old list
+
+    if (items.length === 0) {
+      ul.innerHTML = "<li style='color:#718096'>No items yet.</li>";
+      return;
+    }
+
+    // forEach creates one <li> per item
+    items.forEach((item, index) => {
+      let li = document.createElement("li");
+      li.innerHTML = `${item}
+        <button onclick="removeItem(${index})">✕</button>`;
+      ul.appendChild(li);
+    });
+  }
+
+  function addItem() {
+    let val = document.getElementById("newItem").value.trim();
+    if (!val) { alert("Enter something first!"); return; }
+    items.push(val);                      // add to array
+    document.getElementById("newItem").value = "";
+    renderList();                            // refresh DOM
+  }
+
+  function removeItem(index) {
+    items.splice(index, 1);               // remove 1 item at index
+    renderList();
+  }
+
+  renderList();   // run on page load
+</script>
+
+</body>
+
+</html>

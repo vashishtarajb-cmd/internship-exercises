@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML, JavaScript & jQuery – Complete Beginner's Guide</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1f2435;
+    --border: #2a3050;
+    --accent: #4f8ef7;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --warn: #f59e0b;
+    --danger: #f87171;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --code-bg: #0d1117;
+    --tag: #f59e0b;
+    --string: #34d399;
+    --keyword: #a78bfa;
+    --comment: #4a5568;
+    --number: #fb923c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  #sidebar {
+    width: 270px;
+    min-width: 270px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 24px 0;
+    flex-shrink: 0;
+  }
+  #sidebar .logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  #sidebar .logo h2 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+  }
+  #sidebar .logo p { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  #sidebar nav a {
+    display: block;
+    padding: 7px 20px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    transition: all .15s;
+  }
+  #sidebar nav a:hover, #sidebar nav a.active {
+    color: var(--text);
+    border-left-color: var(--accent);
+    background: rgba(79,142,247,.06);
+  }
+  #sidebar nav .section-label {
+    padding: 14px 20px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+  }
+  #sidebar nav a.sub { padding-left: 32px; font-size: 12px; }
+
+  /* ── Main ── */
+  #main {
+    flex: 1;
+    max-width: 900px;
+    padding: 48px 56px;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    margin-bottom: 56px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero .badge {
+    display: inline-block;
+    background: rgba(79,142,247,.15);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.2;
+    background: linear-gradient(135deg, var(--text) 30%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+  .hero p { color: var(--muted); font-size: 15px; max-width: 580px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+  .chip {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .chip.html { color: var(--warn); border-color: rgba(245,158,11,.3); }
+  .chip.js { color: var(--accent); border-color: rgba(79,142,247,.3); }
+  .chip.jq { color: var(--accent2); border-color: rgba(167,139,250,.3); }
+
+  /* ── Section ── */
+  .section { margin-bottom: 64px; scroll-margin-top: 24px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .num-html { background: rgba(245,158,11,.15); color: var(--warn); }
+  .num-js   { background: rgba(79,142,247,.15);  color: var(--accent); }
+  .num-jq   { background: rgba(167,139,250,.15); color: var(--accent2); }
+  .num-ajax { background: rgba(52,211,153,.15);  color: var(--accent3); }
+  .section h2 { font-size: 22px; font-weight: 700; }
+
+  /* ── Sub-section ── */
+  .topic { margin-bottom: 40px; scroll-margin-top: 24px; }
+  .topic h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topic h3 .label {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .label-html { background: rgba(245,158,11,.15); color: var(--warn); }
+  .label-js   { background: rgba(79,142,247,.15);  color: var(--accent); }
+  .label-jq   { background: rgba(167,139,250,.15); color: var(--accent2); }
+  .label-ajax { background: rgba(52,211,153,.15);  color: var(--accent3); }
+
+  p { margin-bottom: 12px; }
+  ul, ol { padding-left: 20px; margin-bottom: 12px; }
+  li { margin-bottom: 4px; }
+  strong { color: var(--text); }
+  em { color: var(--muted); font-style: normal; }
+
+  /* ── Info boxes ── */
+  .box {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14px;
+    border-left: 3px solid;
+  }
+  .box-why   { background: rgba(79,142,247,.07);  border-color: var(--accent);  }
+  .box-how   { background: rgba(52,211,153,.07);  border-color: var(--accent3); }
+  .box-where { background: rgba(167,139,250,.07); border-color: var(--accent2); }
+  .box-tip   { background: rgba(245,158,11,.07);  border-color: var(--warn); }
+  .box-out   { background: rgba(248,113,113,.07); border-color: var(--danger); }
+  .box-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .box-why .box-label   { color: var(--accent); }
+  .box-how .box-label   { color: var(--accent3); }
+  .box-where .box-label { color: var(--accent2); }
+  .box-tip .box-label   { color: var(--warn); }
+  .box-out .box-label   { color: var(--danger); }
+
+  /* ── Code blocks ── */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  .code-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .code-header span {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+  .code-dots { display: flex; gap: 5px; }
+  .code-dots i {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: block;
+  }
+  .code-dots i:nth-child(1) { background: #ff5f57; }
+  .code-dots i:nth-child(2) { background: #ffbd2e; }
+  .code-dots i:nth-child(3) { background: #28c840; }
+  pre {
+    padding: 18px 20px;
+    overflow-x: auto;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  code { font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace; }
+  .t  { color: var(--tag); }      /* tag / attribute */
+  .s  { color: var(--string); }   /* string value */
+  .k  { color: var(--keyword); }  /* keyword */
+  .c  { color: var(--comment); }  /* comment */
+  .n  { color: var(--number); }   /* number */
+  .fn { color: #60a5fa; }         /* function name */
+  .p  { color: #94a3b8; }         /* punctuation */
+  .v  { color: #fb923c; }         /* variable */
+
+  /* ── Output preview ── */
+  .output-block {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+    border: 1px solid var(--border);
+  }
+  .output-header {
+    background: var(--surface2);
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .output-header::before {
+    content: '▶';
+    color: var(--accent3);
+    font-size: 9px;
+  }
+  .output-body {
+    padding: 16px 20px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #1a202c;
+  }
+  .output-body button {
+    padding: 6px 14px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    margin: 2px;
+  }
+  .output-body input, .output-body select {
+    border: 1px solid #cbd5e0;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 13px;
+    margin: 2px;
+  }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+  th, td { padding: 9px 14px; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--surface2); color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* ── Inline code ── */
+  .ic {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  /* ── Dividers ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* ── Scroll to top ── */
+  #top-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 40px; height: 40px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(79,142,247,.4);
+    opacity: 0;
+    transition: opacity .3s;
+    z-index: 999;
+  }
+  #top-btn.visible { opacity: 1; }
+
+  /* ── Progress bar ── */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width .1s;
+    z-index: 1000;
+  }
+
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<nav id="sidebar">
+  <div class="logo">
+    <h2>Web Dev Basics</h2>
+    <p>HTML · JavaScript · jQuery</p>
+  </div>
+  <nav>
+    <div class="section-label">HTML</div>
+    <a href="#s1">1. Structure & Boilerplate</a>
+    <a href="#s1-tags" class="sub">Tags & Elements</a>
+    <a href="#s1-forms" class="sub">Forms & Inputs</a>
+    <a href="#s1-div" class="sub">Div & Layout</a>
+
+    <div class="section-label">JavaScript</div>
+    <a href="#s2">2. Core Concepts</a>
+    <a href="#s2-vars" class="sub">Variables & Types</a>
+    <a href="#s2-dom" class="sub">DOM Manipulation</a>
+    <a href="#s2-div" class="sub">Scripting Divs</a>
+    <a href="#s2-events" class="sub">Event Handlers</a>
+    <a href="#s2-forms" class="sub">Form Validation</a>
+    <a href="#s2-params" class="sub">Parameters & Values</a>
+    <a href="#s2-funcs" class="sub">Functions</a>
+    <a href="#s2-loops" class="sub">Loops & Arrays</a>
+    <a href="#s2-objects" class="sub">Objects & JSON</a>
+
+    <div class="section-label">jQuery</div>
+    <a href="#s3">3. jQuery Basics</a>
+    <a href="#s3-select" class="sub">Selectors</a>
+    <a href="#s3-dom" class="sub">DOM with jQuery</a>
+    <a href="#s3-events" class="sub">Events</a>
+    <a href="#s3-effects" class="sub">Effects & Animation</a>
+    <a href="#s3-forms" class="sub">Form Handling</a>
+
+    <div class="section-label">AJAX</div>
+    <a href="#s4">4. AJAX Calls</a>
+    <a href="#s4-fetch" class="sub">fetch() API</a>
+    <a href="#s4-jq" class="sub">$.ajax() & $.get()</a>
+    <a href="#s4-post" class="sub">POST Requests</a>
+    <a href="#s4-errors" class="sub">Error Handling</a>
+  </nav>
+</nav>
+
+<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+<main id="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="badge">Beginner's Guide</div>
+    <h1>HTML, JavaScript<br>&amp; jQuery — from Zero</h1>
+    <p>A complete, step-by-step reference covering every core concept: structure, scripting, events, DOM, form validation, and AJAX — all explained with clean examples and expected outputs.</p>
+    <div class="chips">
+      <span class="chip html">HTML5</span>
+      <span class="chip js">Vanilla JS</span>
+      <span class="chip jq">jQuery 3.x</span>
+    </div>
+  </div>
+
+
+  <!-- ════════════ SECTION 1 – HTML ════════════ -->
+  <section class="section" id="s1">
+    <div class="section-header">
+      <span class="section-num num-html">1</span>
+      <h2>HTML — Structure &amp; Markup</h2>
+    </div>
+
+    <p>HTML (<strong>HyperText Markup Language</strong>) is the skeleton of every web page. It defines <em>what</em> content exists — JavaScript later decides <em>what it does</em>, and CSS decides <em>how it looks</em>.</p>
+
+    <!-- 1.1 Boilerplate -->
+    <div class="topic" id="s1-tags">
+      <h3>1.1 &nbsp;The Boilerplate — Every file starts here <span class="label label-html">HTML</span></h3>
+
+      <div class="box box-why">
+        <div class="box-label">Why</div>
+        Browsers need a declaration of document type and character encoding before they can render anything correctly.
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>index.html</span></div>
+        <pre><code><span class="t">&lt;!DOCTYPE html&gt;</span>                 <span class="c">&lt;!-- Tells browser: "this is HTML5" --&gt;</span>
+<span class="t">&lt;html</span> <span class="t">lang=</span><span class="s">"en"</span><span class="t">&gt;</span>
+<span class="t">&lt;head&gt;</span>
+  <span class="t">&lt;meta</span> <span class="t">charset=</span><span class="s">"UTF-8"</span><span class="t">&gt;</span>         <span class="c">&lt;!-- Support all characters --&gt;</span>
+  <span class="t">&lt;meta</span> <span class="t">name=</span><span class="s">"viewport"</span> <span class="t">content=</span><span class="s">"width=device-width, initial-scale=1.0"</span><span class="t">&gt;</span>
+  <span class="t">&lt;title&gt;</span>My First Page<span class="t">&lt;/title&gt;</span>
+  <span class="t">&lt;link</span> <span class="t">rel=</span><span class="s">"stylesheet"</span> <span class="t">href=</span><span class="s">"style.css"</span><span class="t">&gt;</span>    <span class="c">&lt;!-- External CSS --&gt;</span>
+<span class="t">&lt;/head&gt;</span>
+<span class="t">&lt;body&gt;</span>
+  <span class="c">&lt;!-- All visible content goes here --&gt;</span>
+  <span class="t">&lt;h1&gt;</span>Hello, World!<span class="t">&lt;/h1&gt;</span>
+
+  <span class="t">&lt;script</span> <span class="t">src=</span><span class="s">"app.js"</span><span class="t">&gt;&lt;/script&gt;</span>     <span class="c">&lt;!-- JS at bottom so HTML loads first --&gt;</span>
+<span class="t">&lt;/body&gt;</span>
+<span class="t">&lt;/html&gt;</span></code></pre>
+      </div>
+
+      <div class="box box-tip">
+        <div class="box-label">💡 Tip — Why put &lt;script&gt; at the bottom?</div>
+        Browsers read HTML top-to-bottom. If your script is at the top, it may try to access elements that haven't been created yet — and fail silently.
+      </div>
+
+      <h3 style="margin-top:28px">1.2 &nbsp;Common Tags <span class="label label-html">HTML</span></h3>
+      <table>
+        <thead><tr><th>Tag</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="ic">&lt;h1&gt; – &lt;h6&gt;</td><td>Headings (h1 = biggest)</td><td><code>&lt;h1&gt;Title&lt;/h1&gt;</code></td></tr>
+          <tr><td class="ic">&lt;p&gt;</td><td>Paragraph</td><td><code>&lt;p&gt;Hello world.&lt;/p&gt;</code></td></tr>
+          <tr><td class="ic">&lt;a&gt;</td><td>Hyperlink</td><td><code>&lt;a href="url"&gt;Click&lt;/a&gt;</code></td></tr>
+          <tr><td class="ic">&lt;img&gt;</td><td>Image (self-closing)</td><td><code>&lt;img src="photo.png" alt="desc"&gt;</code></td></tr>
+          <tr><td class="ic">&lt;ul&gt; / &lt;ol&gt;</td><td>Unordered / ordered list</td><td><code>&lt;li&gt;item&lt;/li&gt;</code></td></tr>
+          <tr><td class="ic">&lt;table&gt;</td><td>Data table</td><td><code>&lt;tr&gt;&lt;td&gt;cell&lt;/td&gt;&lt;/tr&gt;</code></td></tr>
+          <tr><td class="ic">&lt;div&gt;</td><td>Block container (layout)</td><td><code>&lt;div id="box"&gt;…&lt;/div&gt;</code></td></tr>
+          <tr><td class="ic">&lt;span&gt;</td><td>Inline container</td><td><code>&lt;span class="note"&gt;…&lt;/span&gt;</code></td></tr>
+          <tr><td class="ic">&lt;button&gt;</td><td>Clickable button</td><td><code>&lt;button onclick="fn()"&gt;Go&lt;/button&gt;</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 1.2 Forms -->
+    <div class="topic" id="s1-forms">
+      <h3>1.3 &nbsp;Forms &amp; Input Elements <span class="label label-html">HTML</span></h3>
+
+      <div class="box box-where">
+        <div class="box-label">Where to use</div>
+        Login pages, registration, search bars, feedback forms — anywhere a user needs to enter data.
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>forms.html</span></div>
+        <pre><code><span class="t">&lt;form</span> <span class="t">id=</span><span class="s">"registrationForm"</span> <span class="t">method=</span><span class="s">"post"</span><span class="t">&gt;</span>
+
+  <span class="c">&lt;!-- Text input --&gt;</span>
+  <span class="t">&lt;label</span> <span class="t">for=</span><span class="s">"name"</span><span class="t">&gt;</span>Full Name:<span class="t">&lt;/label&gt;</span>
+  <span class="t">&lt;input</span> <span class="t">type=</span><span class="s">"text"</span> <span class="t">id=</span><span class="s">"name"</span> <span class="t">name=</span><span class="s">"name"</span> <span class="t">placeholder=</span><span class="s">"John Doe"</span> <span class="t">required</span><span class="t">&gt;</span>
+
+  <span class="c">&lt;!-- Email input --&gt;</span>
+  <span class="t">&lt;label</span> <span class="t">for=</span><span class="s">"email"</span><span class="t">&gt;</span>Email:<span class="t">&lt;/label&gt;</span>
+  <span class="t">&lt;input</span> <span class="t">type=</span><span class="s">"email"</span> <span class="t">id=</span><span class="s">"email"</span> <span class="t">name=</span><span class="s">"email"</span><span class="t">&gt;</span>
+
+  <span class="c">&lt;!-- Password input --&gt;</span>
+  <span class="t">&lt;input</span> <span class="t">type=</span><span class="s">"password"</span> <span class="t">id=</span><span class="s">"pwd"</span> <span class="t">placeholder=</span><span class="s">"••••••••"</span><span class="t">&gt;</span>
+
+  <span class="c">&lt;!-- Dropdown --&gt;</span>
+  <span class="t">&lt;select</span> <span class="t">id=</span><span class="s">"role"</span><span class="t">&gt;</span>
+    <span class="t">&lt;option</span> <span class="t">value=</span><span class="s">""</span><span class="t">&gt;</span>-- Select Role --<span class="t">&lt;/option&gt;</span>
+    <span class="t">&lt;option</span> <span class="t">value=</span><span class="s">"admin"</span><span class="t">&gt;</span>Admin<span class="t">&lt;/option&gt;</span>
+    <span class="t">&lt;option</span> <span class="t">value=</span><span class="s">"user"</span><span class="t">&gt;</span>User<span class="t">&lt;/option&gt;</span>
+  <span class="t">&lt;/select&gt;</span>
+
+  <span class="c">&lt;!-- Radio buttons --&gt;</span>
+  <span class="t">&lt;input</span> <span class="t">type=</span><span class="s">"radio"</span> <span class="t">name=</span><span class="s">"gender"</span> <span class="t">value=</span><span class="s">"male"</span><span class="t">&gt;</span> Male
+  <span class="t">&lt;input</span> <span class="t">type=</span><span class="s">"radio"</span> <span class="t">name=</span><span class="s">"gender"</span> <span class="t">value=</span><span class="s">"female"</span><span class="t">&gt;</span> Female
+
+  <span class="c">&lt;!-- Checkbox --&gt;</span>
+  <span class="t">&lt;input</span> <span class="t">type=</span><span class="s">"checkbox"</span> <span class="t">id=</span><span class="s">"terms"</span><span class="t">&gt;</span> I agree to the terms
+
+  <span class="c">&lt;!-- Textarea --&gt;</span>
+  <span class="t">&lt;textarea</span> <span class="t">id=</span><span class="s">"bio"</span> <span class="t">rows=</span><span class="s">"4"</span> <span class="t">placeholder=</span><span class="s">"Tell us about yourself…"</span><span class="t">&gt;&lt;/textarea&gt;</span>
+
+  <span class="c">&lt;!-- Hidden field — stores values invisibly --&gt;</span>
+  <span class="t">&lt;input</span> <span class="t">type=</span><span class="s">"hidden"</span> <span class="t">id=</span><span class="s">"userId"</span> <span class="t">value=</span><span class="s">"42"</span><span class="t">&gt;</span>
+
+  <span class="t">&lt;button</span> <span class="t">type=</span><span class="s">"submit"</span><span class="t">&gt;</span>Register<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;/form&gt;</span></code></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-header">Browser Output</div>
+        <div class="output-body">
+          <div style="display:grid;gap:8px;max-width:380px">
+            <div><label style="display:block;font-size:12px;color:#666;margin-bottom:2px">Full Name</label><input type="text" placeholder="John Doe" style="width:100%"></div>
+            <div><label style="display:block;font-size:12px;color:#666;margin-bottom:2px">Email</label><input type="email" placeholder="you@example.com" style="width:100%"></div>
+            <div><label style="display:block;font-size:12px;color:#666;margin-bottom:2px">Role</label><select style="width:100%"><option>-- Select Role --</option><option>Admin</option><option>User</option></select></div>
+            <div style="font-size:13px"><input type="radio" name="g"> Male &nbsp;<input type="radio" name="g"> Female</div>
+            <div style="font-size:13px"><input type="checkbox"> I agree to the terms</div>
+            <button>Register</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.3 Divs -->
+    <div class="topic" id="s1-div">
+      <h3>1.4 &nbsp;Div, ID &amp; Class — the targeting system <span class="label label-html">HTML</span></h3>
+
+      <div class="box box-why">
+        <div class="box-label">Why</div>
+        <strong>id</strong> is a unique name — like a passport number (one element per page). <strong>class</strong> is a category — like a job title (many elements can share it). JavaScript and CSS use these to find and manipulate elements.
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>layout.html</span></div>
+        <pre><code><span class="c">&lt;!-- ID: unique identifier, used by JS with getElementById --&gt;</span>
+<span class="t">&lt;div</span> <span class="t">id=</span><span class="s">"header"</span><span class="t">&gt;</span>
+  <span class="t">&lt;h1&gt;</span>My App<span class="t">&lt;/h1&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- CLASS: reusable grouping, used by JS with getElementsByClassName --&gt;</span>
+<span class="t">&lt;div</span> <span class="t">class=</span><span class="s">"card"</span><span class="t">&gt;</span>Card One<span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;div</span> <span class="t">class=</span><span class="s">"card"</span><span class="t">&gt;</span>Card Two<span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;div</span> <span class="t">class=</span><span class="s">"card highlight"</span><span class="t">&gt;</span>Card Three (has two classes)<span class="t">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- DATA ATTRIBUTES: store custom values on elements --&gt;</span>
+<span class="t">&lt;div</span> <span class="t">id=</span><span class="s">"product-1"</span>
+     <span class="t">data-price=</span><span class="s">"499"</span>
+     <span class="t">data-category=</span><span class="s">"electronics"</span><span class="t">&gt;</span>
+  Laptop
+<span class="t">&lt;/div&gt;</span></code></pre>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════ SECTION 2 – JAVASCRIPT ════════════ -->
+  <section class="section" id="s2">
+    <div class="section-header">
+      <span class="section-num num-js">2</span>
+      <h2>JavaScript — Behaviour &amp; Logic</h2>
+    </div>
+    <p>JavaScript makes pages <em>interactive</em>. It runs in the browser, reads and changes HTML, responds to user actions, and communicates with servers.</p>
+
+    <!-- Variables -->
+    <div class="topic" id="s2-vars">
+      <h3>2.1 &nbsp;Variables, Types &amp; Operators <span class="label label-js">JS</span></h3>
+
+      <div class="box box-how">
+        <div class="box-label">How</div>
+        Use <strong>const</strong> when the value won't change, <strong>let</strong> when it will. Avoid <strong>var</strong> in modern code — it has confusing scoping rules.
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>variables.js</span></div>
+        <pre><code><span class="c">// ── Declaring variables ──────────────────────────</span>
+<span class="k">const</span> <span class="v">siteName</span>  <span class="p">=</span> <span class="s">"MyApp"</span><span class="p">;</span>          <span class="c">// string</span>
+<span class="k">let</span>   <span class="v">pageCount</span> <span class="p">=</span> <span class="n">0</span><span class="p">;</span>              <span class="c">// number</span>
+<span class="k">let</span>   <span class="v">isLoggedIn</span><span class="p">=</span> <span class="k">false</span><span class="p">;</span>          <span class="c">// boolean</span>
+<span class="k">let</span>   <span class="v">userAge</span>   <span class="p">=</span> <span class="k">null</span><span class="p">;</span>           <span class="c">// null (intentionally empty)</span>
+<span class="k">let</span>   <span class="v">score</span><span class="p">;</span>                      <span class="c">// undefined (declared, no value yet)</span>
+
+<span class="c">// ── Arithmetic operators ─────────────────────────</span>
+<span class="k">let</span> <span class="v">x</span> <span class="p">=</span> <span class="n">10</span><span class="p">,</span> <span class="v">y</span> <span class="p">=</span> <span class="n">3</span><span class="p">;</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="v">x</span> <span class="p">+</span> <span class="v">y</span><span class="p">);</span>   <span class="c">// 13</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="v">x</span> <span class="p">-</span> <span class="v">y</span><span class="p">);</span>   <span class="c">// 7</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="v">x</span> <span class="p">*</span> <span class="v">y</span><span class="p">);</span>   <span class="c">// 30</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="v">x</span> <span class="p">/</span> <span class="v">y</span><span class="p">);</span>   <span class="c">// 3.333…</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="v">x</span> <span class="p">%</span> <span class="v">y</span><span class="p">);</span>   <span class="c">// 1   (remainder)</span>
+
+<span class="c">// ── Comparison operators ─────────────────────────</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="n">5</span> <span class="p">===</span> <span class="n">5</span><span class="p">);</span>  <span class="c">// true  (strict equal)</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="n">5</span> <span class="p">==</span>  <span class="s">"5"</span><span class="p">);</span> <span class="c">// true  (loose — avoids this)</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="n">5</span> <span class="p">!==</span> <span class="n">4</span><span class="p">);</span>  <span class="c">// true  (strict not equal)</span>
+
+<span class="c">// ── String concatenation / template literal ──────</span>
+<span class="k">const</span> <span class="v">msg1</span> <span class="p">=</span> <span class="s">"Hello, "</span> <span class="p">+</span> <span class="v">siteName</span><span class="p">;</span>
+<span class="k">const</span> <span class="v">msg2</span> <span class="p">=</span> <span class="s">`Hello, <span class="p">${</span><span class="v">siteName</span><span class="p">}</span>! Pages visited: <span class="p">${</span><span class="v">pageCount</span><span class="p">}</span>`</span><span class="p">;</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="v">msg2</span><span class="p">);</span>    <span class="c">// Hello, MyApp! Pages visited: 0</span></code></pre>
+      </div>
+    </div>
+
+    <!-- DOM -->
+    <div class="topic" id="s2-dom">
+      <h3>2.2 &nbsp;DOM — Finding &amp; Changing Elements <span class="label label-js">JS</span></h3>
+
+      <div class="box box-why">
+        <div class="box-label">Why</div>
+        The <strong>DOM</strong> (Document Object Model) is the browser's live tree of your HTML. JavaScript reaches into this tree to read, change, add, or remove elements — without reloading the page.
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>dom.js</span></div>
+        <pre><code><span class="c">// ── Selecting elements ────────────────────────────</span>
+<span class="k">const</span> <span class="v">el1</span>  <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'header'</span><span class="p">);</span>
+<span class="k">const</span> <span class="v">el2</span>  <span class="p">=</span> document<span class="p">.</span><span class="fn">querySelector</span><span class="p">(</span><span class="s">'#header'</span><span class="p">);</span>       <span class="c">// same as above</span>
+<span class="k">const</span> <span class="v">cards</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">querySelectorAll</span><span class="p">(</span><span class="s">'.card'</span><span class="p">);</span>     <span class="c">// all .card divs</span>
+<span class="k">const</span> <span class="v">btns</span>  <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementsByTagName</span><span class="p">(</span><span class="s">'button'</span><span class="p">);</span>
+
+<span class="c">// ── Reading & writing content ────────────────────</span>
+<span class="k">const</span> <span class="v">box</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'myBox'</span><span class="p">);</span>
+box<span class="p">.</span>textContent  <span class="p">=</span> <span class="s">"Plain text — safe from XSS"</span><span class="p">;</span>
+box<span class="p">.</span>innerHTML    <span class="p">=</span> <span class="s">"&lt;strong&gt;Bold text&lt;/strong&gt;"</span><span class="p">;</span>  <span class="c">// renders HTML</span>
+
+<span class="c">// ── Reading & changing attributes ───────────────</span>
+<span class="k">const</span> <span class="v">link</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">querySelector</span><span class="p">(</span><span class="s">'a'</span><span class="p">);</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>link<span class="p">.</span><span class="fn">getAttribute</span><span class="p">(</span><span class="s">'href'</span><span class="p">));</span>
+link<span class="p">.</span><span class="fn">setAttribute</span><span class="p">(</span><span class="s">'href'</span><span class="p">,</span> <span class="s">'https://example.com'</span><span class="p">);</span>
+
+<span class="c">// ── Changing CSS styles ──────────────────────────</span>
+box<span class="p">.</span>style<span class="p">.</span>color      <span class="p">=</span> <span class="s">'red'</span><span class="p">;</span>
+box<span class="p">.</span>style<span class="p">.</span>fontSize   <span class="p">=</span> <span class="s">'18px'</span><span class="p">;</span>
+box<span class="p">.</span>style<span class="p">.</span>display    <span class="p">=</span> <span class="s">'none'</span><span class="p">;</span>   <span class="c">// hide the element</span>
+box<span class="p">.</span>style<span class="p">.</span>display    <span class="p">=</span> <span class="s">'block'</span><span class="p">;</span>  <span class="c">// show it again</span>
+
+<span class="c">// ── Adding / removing CSS classes ───────────────</span>
+box<span class="p">.</span>classList<span class="p">.</span><span class="fn">add</span><span class="p">(</span><span class="s">'active'</span><span class="p">);</span>
+box<span class="p">.</span>classList<span class="p">.</span><span class="fn">remove</span><span class="p">(</span><span class="s">'hidden'</span><span class="p">);</span>
+box<span class="p">.</span>classList<span class="p">.</span><span class="fn">toggle</span><span class="p">(</span><span class="s">'highlight'</span><span class="p">);</span>  <span class="c">// adds if absent, removes if present</span>
+box<span class="p">.</span>classList<span class="p">.</span><span class="fn">contains</span><span class="p">(</span><span class="s">'active'</span><span class="p">);</span> <span class="c">// → true / false</span>
+
+<span class="c">// ── Creating & inserting new elements ───────────</span>
+<span class="k">const</span> <span class="v">newPara</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">createElement</span><span class="p">(</span><span class="s">'p'</span><span class="p">);</span>
+newPara<span class="p">.</span>textContent <span class="p">=</span> <span class="s">"I was created by JavaScript!"</span><span class="p">;</span>
+document<span class="p">.</span>body<span class="p">.</span><span class="fn">appendChild</span><span class="p">(</span><span class="v">newPara</span><span class="p">);</span>  <span class="c">// appended at the end</span>
+
+<span class="c">// ── Removing an element ──────────────────────────</span>
+<span class="k">const</span> <span class="v">toRemove</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'old'</span><span class="p">);</span>
+toRemove<span class="p">.</span><span class="fn">remove</span><span class="p">();</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Scripting Divs -->
+    <div class="topic" id="s2-div">
+      <h3>2.3 &nbsp;Scripting Div Sections <span class="label label-js">JS</span></h3>
+      <p>A very common pattern: show/hide panels, update a result box, or build a product card dynamically.</p>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>div-scripting.html + js</span></div>
+        <pre><code><span class="c">&lt;!-- HTML --&gt;</span>
+<span class="t">&lt;button</span> <span class="t">onclick=</span><span class="s">"togglePanel()"</span><span class="t">&gt;</span>Toggle Panel<span class="t">&lt;/button&gt;</span>
+
+<span class="t">&lt;div</span> <span class="t">id=</span><span class="s">"panel"</span> <span class="t">style=</span><span class="s">"display:none"</span><span class="t">&gt;</span>
+  I am a hidden panel!
+<span class="t">&lt;/div&gt;</span>
+
+<span class="t">&lt;div</span> <span class="t">id=</span><span class="s">"result"</span><span class="t">&gt;&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- JavaScript --&gt;</span>
+<span class="t">&lt;script&gt;</span>
+<span class="k">function</span> <span class="fn">togglePanel</span><span class="p">() {</span>
+  <span class="k">const</span> <span class="v">panel</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'panel'</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span>panel<span class="p">.</span>style<span class="p">.</span>display <span class="p">===</span> <span class="s">'none'</span><span class="p">) {</span>
+    panel<span class="p">.</span>style<span class="p">.</span>display <span class="p">=</span> <span class="s">'block'</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    panel<span class="p">.</span>style<span class="p">.</span>display <span class="p">=</span> <span class="s">'none'</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">// Dynamically build a product card inside a div</span>
+<span class="k">function</span> <span class="fn">renderProduct</span><span class="p">(</span><span class="v">name</span><span class="p">,</span> <span class="v">price</span><span class="p">) {</span>
+  <span class="k">const</span> <span class="v">result</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'result'</span><span class="p">);</span>
+  result<span class="p">.</span>innerHTML <span class="p">=</span> <span class="s">`
+    &lt;div class="card"&gt;
+      &lt;h3&gt;<span class="p">${</span><span class="v">name</span><span class="p">}</span>&lt;/h3&gt;
+      &lt;p&gt;Price: ₹<span class="p">${</span><span class="v">price</span><span class="p">}</span>&lt;/p&gt;
+      &lt;button onclick="addToCart('<span class="p">${</span><span class="v">name</span><span class="p">}</span>')"&gt;Add to Cart&lt;/button&gt;
+    &lt;/div&gt;
+  `</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="fn">renderProduct</span><span class="p">(</span><span class="s">"Laptop"</span><span class="p">,</span> <span class="n">49999</span><span class="p">);</span>
+<span class="t">&lt;/script&gt;</span></code></pre>
+      </div>
+
+      <div class="box box-out">
+        <div class="box-label">🖥 Output</div>
+        Clicking "Toggle Panel" shows/hides the div. The <span class="ic">result</span> div renders a product card with a live "Add to Cart" button.
+      </div>
+    </div>
+
+    <!-- Event Handlers -->
+    <div class="topic" id="s2-events">
+      <h3>2.4 &nbsp;Event Handlers — Reacting to user actions <span class="label label-js">JS</span></h3>
+
+      <div class="box box-where">
+        <div class="box-label">Where to use</div>
+        Button clicks, form submissions, keyboard input, mouse hover, page load — any user interaction.
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>events.js</span></div>
+        <pre><code><span class="c">// ── Method 1: Inline (simple, quick) ─────────────</span>
+<span class="c">// &lt;button onclick="greet()"&gt;Greet&lt;/button&gt;</span>
+<span class="k">function</span> <span class="fn">greet</span><span class="p">() {</span>
+  <span class="fn">alert</span><span class="p">(</span><span class="s">"Hello!"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c">// ── Method 2: DOM property (overwrites previous) ──</span>
+<span class="k">const</span> <span class="v">btn</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'myBtn'</span><span class="p">);</span>
+btn<span class="p">.</span>onclick <span class="p">=</span> <span class="k">function</span><span class="p">() {</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Button clicked!"</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c">// ── Method 3: addEventListener (best practice) ───</span>
+btn<span class="p">.</span><span class="fn">addEventListener</span><span class="p">(</span><span class="s">'click'</span><span class="p">,</span> <span class="k">function</span><span class="p">() {</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Click via addEventListener"</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c">// ── Common events ────────────────────────────────</span>
+<span class="k">const</span> <span class="v">input</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'myInput'</span><span class="p">);</span>
+
+input<span class="p">.</span><span class="fn">addEventListener</span><span class="p">(</span><span class="s">'input'</span><span class="p">,</span> <span class="p">(</span><span class="v">e</span><span class="p">)</span> <span class="p">=&gt; {</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Typed:"</span><span class="p">,</span> e<span class="p">.</span>target<span class="p">.</span>value<span class="p">);</span>  <span class="c">// live as you type</span>
+<span class="p">});</span>
+
+input<span class="p">.</span><span class="fn">addEventListener</span><span class="p">(</span><span class="s">'change'</span><span class="p">,</span> <span class="p">(</span><span class="v">e</span><span class="p">)</span> <span class="p">=&gt; {</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Changed to:"</span><span class="p">,</span> e<span class="p">.</span>target<span class="p">.</span>value<span class="p">);</span>  <span class="c">// fires on blur</span>
+<span class="p">});</span>
+
+input<span class="p">.</span><span class="fn">addEventListener</span><span class="p">(</span><span class="s">'keydown'</span><span class="p">,</span> <span class="p">(</span><span class="v">e</span><span class="p">)</span> <span class="p">=&gt; {</span>
+  <span class="k">if</span> <span class="p">(</span>e<span class="p">.</span>key <span class="p">===</span> <span class="s">'Enter'</span><span class="p">)</span> <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Enter pressed"</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c">// ── Mouse events ─────────────────────────────────</span>
+<span class="k">const</span> <span class="v">box</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'hoverBox'</span><span class="p">);</span>
+box<span class="p">.</span><span class="fn">addEventListener</span><span class="p">(</span><span class="s">'mouseover'</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> box<span class="p">.</span>style<span class="p">.</span>background <span class="p">=</span> <span class="s">'yellow'</span><span class="p">);</span>
+box<span class="p">.</span><span class="fn">addEventListener</span><span class="p">(</span><span class="s">'mouseout'</span><span class="p">,</span>  <span class="p">()</span> <span class="p">=&gt;</span> box<span class="p">.</span>style<span class="p">.</span>background <span class="p">=</span> <span class="s">''</span><span class="p">);</span>
+
+<span class="c">// ── Page load event ──────────────────────────────</span>
+document<span class="p">.</span><span class="fn">addEventListener</span><span class="p">(</span><span class="s">'DOMContentLoaded'</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt; {</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Page is fully loaded and ready!"</span><span class="p">);</span>
+<span class="p">});</span></code></pre>
+      </div>
+
+      <div class="box box-tip">
+        <div class="box-label">💡 Event Object (e)</div>
+        Every event listener receives an <strong>event object</strong> (often called <span class="ic">e</span> or <span class="ic">event</span>). It contains: <span class="ic">e.target</span> (the element that was clicked/typed), <span class="ic">e.target.value</span> (the input's current value), <span class="ic">e.key</span> (which key was pressed), and <span class="ic">e.preventDefault()</span> (stop the default action, e.g. form submission).
+      </div>
+    </div>
+
+    <!-- Form Validation -->
+    <div class="topic" id="s2-forms">
+      <h3>2.5 &nbsp;Form Validation — Custom JavaScript validation <span class="label label-js">JS</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>validation.html + js</span></div>
+        <pre><code><span class="c">&lt;!-- HTML --&gt;</span>
+<span class="t">&lt;form</span> <span class="t">id=</span><span class="s">"loginForm"</span><span class="t">&gt;</span>
+  <span class="t">&lt;input</span> <span class="t">type=</span><span class="s">"text"</span>     <span class="t">id=</span><span class="s">"username"</span> <span class="t">placeholder=</span><span class="s">"Username"</span><span class="t">&gt;</span>
+  <span class="t">&lt;input</span> <span class="t">type=</span><span class="s">"password"</span> <span class="t">id=</span><span class="s">"password"</span> <span class="t">placeholder=</span><span class="s">"Password"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="t">id=</span><span class="s">"errorMsg"</span> <span class="t">style=</span><span class="s">"color:red"</span><span class="t">&gt;&lt;/div&gt;</span>
+  <span class="t">&lt;button</span> <span class="t">type=</span><span class="s">"submit"</span><span class="t">&gt;</span>Login<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;/form&gt;</span>
+
+<span class="c">&lt;!-- JavaScript --&gt;</span>
+<span class="t">&lt;script&gt;</span>
+document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'loginForm'</span><span class="p">).</span><span class="fn">addEventListener</span><span class="p">(</span><span class="s">'submit'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="v">e</span><span class="p">) {</span>
+  e<span class="p">.</span><span class="fn">preventDefault</span><span class="p">();</span>   <span class="c">// STOP the page from reloading</span>
+
+  <span class="k">const</span> <span class="v">user</span>  <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'username'</span><span class="p">).</span>value<span class="p">.</span><span class="fn">trim</span><span class="p">();</span>
+  <span class="k">const</span> <span class="v">pass</span>  <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'password'</span><span class="p">).</span>value<span class="p">;</span>
+  <span class="k">const</span> <span class="v">errEl</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'errorMsg'</span><span class="p">);</span>
+
+  <span class="c">// Rule 1: Required fields</span>
+  <span class="k">if</span> <span class="p">(!</span><span class="v">user</span><span class="p">) {</span>
+    errEl<span class="p">.</span>textContent <span class="p">=</span> <span class="s">"Username is required."</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">// Rule 2: Minimum length</span>
+  <span class="k">if</span> <span class="p">(</span>pass<span class="p">.</span>length <span class="p">&lt;</span> <span class="n">8</span><span class="p">) {</span>
+    errEl<span class="p">.</span>textContent <span class="p">=</span> <span class="s">"Password must be at least 8 characters."</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">// Rule 3: Email format (using RegEx)</span>
+  <span class="k">const</span> <span class="v">emailPattern</span> <span class="p">=</span> <span class="s">/^[^\s@]+@[^\s@]+\.[^\s@]+$/</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(!</span>emailPattern<span class="p">.</span><span class="fn">test</span><span class="p">(</span><span class="v">user</span><span class="p">)) {</span>
+    errEl<span class="p">.</span>textContent <span class="p">=</span> <span class="s">"Enter a valid email address."</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">// All checks passed</span>
+  errEl<span class="p">.</span>textContent <span class="p">=</span> <span class="s">""</span><span class="p">;</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Form is valid. Submitting…"</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="t">&lt;/script&gt;</span></code></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-header">Output — Validation errors shown inline</div>
+        <div class="output-body">
+          <div style="display:grid;gap:8px;max-width:300px">
+            <input type="text" value="notanemail" style="border:1px solid red;border-radius:4px;padding:6px">
+            <input type="password" value="1234" style="border:1px solid red;border-radius:4px;padding:6px">
+            <div style="color:red;font-size:13px">⚠ Password must be at least 8 characters.</div>
+            <button>Login</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parameters -->
+    <div class="topic" id="s2-params">
+      <h3>2.6 &nbsp;Assigning Parameters &amp; Values via Script <span class="label label-js">JS</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>params.js</span></div>
+        <pre><code><span class="c">// ── Reading values FROM elements ─────────────────</span>
+<span class="k">const</span> <span class="v">nameVal</span>  <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'name'</span><span class="p">).</span>value<span class="p">;</span>
+<span class="k">const</span> <span class="v">roleVal</span>  <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'role'</span><span class="p">).</span>value<span class="p">;</span>
+<span class="k">const</span> <span class="v">isChecked</span><span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'terms'</span><span class="p">).</span>checked<span class="p">;</span>  <span class="c">// boolean</span>
+
+<span class="c">// ── Setting values INTO elements ─────────────────</span>
+document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'name'</span><span class="p">).</span>value   <span class="p">=</span> <span class="s">"Pre-filled name"</span><span class="p">;</span>
+document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'userId'</span><span class="p">).</span>value <span class="p">=</span> <span class="s">"U-999"</span><span class="p">;</span>  <span class="c">// hidden field</span>
+
+<span class="c">// ── Reading data-* attributes ────────────────────</span>
+<span class="k">const</span> <span class="v">product</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'product-1'</span><span class="p">);</span>
+<span class="k">const</span> <span class="v">price</span>   <span class="p">=</span> product<span class="p">.</span>dataset<span class="p">.</span>price<span class="p">;</span>          <span class="c">// "499"</span>
+<span class="k">const</span> <span class="v">category</span><span class="p">=</span> product<span class="p">.</span>dataset<span class="p">.</span>category<span class="p">;</span>       <span class="c">// "electronics"</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">`Price: ₹<span class="p">${</span><span class="v">price</span><span class="p">}</span>, Category: <span class="p">${</span><span class="v">category</span><span class="p">}</span>`</span><span class="p">);</span>
+
+<span class="c">// ── Passing parameters into functions ────────────</span>
+<span class="k">function</span> <span class="fn">updateStatus</span><span class="p">(</span><span class="v">elementId</span><span class="p">,</span> <span class="v">message</span><span class="p">,</span> <span class="v">type</span><span class="p">) {</span>
+  <span class="k">const</span> <span class="v">el</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="v">elementId</span><span class="p">);</span>
+  el<span class="p">.</span>textContent <span class="p">=</span> <span class="v">message</span><span class="p">;</span>
+  el<span class="p">.</span>style<span class="p">.</span>color  <span class="p">=</span> <span class="v">type</span> <span class="p">===</span> <span class="s">'success'</span> <span class="p">?</span> <span class="s">'green'</span> <span class="p">:</span> <span class="s">'red'</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="fn">updateStatus</span><span class="p">(</span><span class="s">'errorMsg'</span><span class="p">,</span> <span class="s">'Saved successfully!'</span><span class="p">,</span> <span class="s">'success'</span><span class="p">);</span>
+
+<span class="c">// ── URL query parameters (from address bar) ───────</span>
+<span class="c">// URL: /page.html?userId=42&tab=profile</span>
+<span class="k">const</span> <span class="v">params</span> <span class="p">=</span> <span class="k">new</span> <span class="fn">URLSearchParams</span><span class="p">(</span>window<span class="p">.</span>location<span class="p">.</span>search<span class="p">);</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>params<span class="p">.</span><span class="fn">get</span><span class="p">(</span><span class="s">'userId'</span><span class="p">));</span>   <span class="c">// "42"</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>params<span class="p">.</span><span class="fn">get</span><span class="p">(</span><span class="s">'tab'</span><span class="p">));</span>     <span class="c">// "profile"</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Functions -->
+    <div class="topic" id="s2-funcs">
+      <h3>2.7 &nbsp;Functions <span class="label label-js">JS</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>functions.js</span></div>
+        <pre><code><span class="c">// Classic function declaration</span>
+<span class="k">function</span> <span class="fn">add</span><span class="p">(</span><span class="v">a</span><span class="p">,</span> <span class="v">b</span><span class="p">) {</span>
+  <span class="k">return</span> <span class="v">a</span> <span class="p">+</span> <span class="v">b</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="fn">add</span><span class="p">(</span><span class="n">3</span><span class="p">,</span> <span class="n">4</span><span class="p">));</span>   <span class="c">// 7</span>
+
+<span class="c">// Arrow function (ES6) — same result, shorter syntax</span>
+<span class="k">const</span> <span class="fn">multiply</span> <span class="p">=</span> <span class="p">(</span><span class="v">a</span><span class="p">,</span> <span class="v">b</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="v">a</span> <span class="p">*</span> <span class="v">b</span><span class="p">;</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="fn">multiply</span><span class="p">(</span><span class="n">3</span><span class="p">,</span> <span class="n">4</span><span class="p">));</span>  <span class="c">// 12</span>
+
+<span class="c">// Default parameters</span>
+<span class="k">function</span> <span class="fn">greet</span><span class="p">(</span><span class="v">name</span> <span class="p">=</span> <span class="s">"Guest"</span><span class="p">) {</span>
+  <span class="k">return</span> <span class="s">`Hello, <span class="p">${</span><span class="v">name</span><span class="p">}</span>!`</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="fn">greet</span><span class="p">());</span>         <span class="c">// Hello, Guest!</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="fn">greet</span><span class="p">(</span><span class="s">"Hari"</span><span class="p">));</span>   <span class="c">// Hello, Hari!</span>
+
+<span class="c">// Immediately Invoked Function Expression (IIFE)</span>
+<span class="p">(()</span> <span class="p">=&gt; {</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Runs immediately when the page loads"</span><span class="p">);</span>
+<span class="p">})();</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Loops -->
+    <div class="topic" id="s2-loops">
+      <h3>2.8 &nbsp;Arrays &amp; Loops <span class="label label-js">JS</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>arrays.js</span></div>
+        <pre><code><span class="k">const</span> <span class="v">fruits</span> <span class="p">=</span> <span class="p">[</span><span class="s">'Apple'</span><span class="p">,</span> <span class="s">'Banana'</span><span class="p">,</span> <span class="s">'Cherry'</span><span class="p">];</span>
+
+<span class="c">// Read / modify</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>fruits<span class="p">[</span><span class="n">0</span><span class="p">]);</span>            <span class="c">// Apple</span>
+fruits<span class="p">.</span><span class="fn">push</span><span class="p">(</span><span class="s">'Date'</span><span class="p">);</span>              <span class="c">// add to end</span>
+fruits<span class="p">.</span><span class="fn">pop</span><span class="p">();</span>                   <span class="c">// remove from end</span>
+fruits<span class="p">.</span><span class="fn">unshift</span><span class="p">(</span><span class="s">'Avocado'</span><span class="p">);</span>       <span class="c">// add to front</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>fruits<span class="p">.</span>length<span class="p">);</span>       <span class="c">// 4</span>
+
+<span class="c">// for loop</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">let</span> <span class="v">i</span> <span class="p">=</span> <span class="n">0</span><span class="p">;</span> <span class="v">i</span> <span class="p">&lt;</span> fruits<span class="p">.</span>length<span class="p">;</span> <span class="v">i</span><span class="p">++)</span> <span class="p">{</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>fruits<span class="p">[</span><span class="v">i</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="c">// for…of (cleaner)</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="v">fruit</span> <span class="k">of</span> fruits<span class="p">)</span> <span class="p">{</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>fruit<span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c">// forEach (callback)</span>
+fruits<span class="p">.</span><span class="fn">forEach</span><span class="p">((</span><span class="v">f</span><span class="p">,</span> <span class="v">i</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="v">i</span><span class="p">,</span> <span class="v">f</span><span class="p">));</span>
+
+<span class="c">// map — transform each element, returns new array</span>
+<span class="k">const</span> <span class="v">upper</span> <span class="p">=</span> fruits<span class="p">.</span><span class="fn">map</span><span class="p">(</span><span class="v">f</span> <span class="p">=&gt;</span> f<span class="p">.</span><span class="fn">toUpperCase</span><span class="p">());</span>
+<span class="c">// → ['AVOCADO', 'APPLE', 'BANANA', 'CHERRY']</span>
+
+<span class="c">// filter — keep elements matching a condition</span>
+<span class="k">const</span> <span class="v">longNames</span> <span class="p">=</span> fruits<span class="p">.</span><span class="fn">filter</span><span class="p">(</span><span class="v">f</span> <span class="p">=&gt;</span> f<span class="p">.</span>length <span class="p">&gt;</span> <span class="n">5</span><span class="p">);</span>
+<span class="c">// → ['Avocado', 'Banana', 'Cherry']</span>
+
+<span class="c">// find — first element matching condition</span>
+<span class="k">const</span> <span class="v">found</span> <span class="p">=</span> fruits<span class="p">.</span><span class="fn">find</span><span class="p">(</span><span class="v">f</span> <span class="p">=&gt;</span> f<span class="p">.</span><span class="fn">startsWith</span><span class="p">(</span><span class="s">'B'</span><span class="p">));</span>  <span class="c">// "Banana"</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Objects -->
+    <div class="topic" id="s2-objects">
+      <h3>2.9 &nbsp;Objects &amp; JSON <span class="label label-js">JS</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>objects.js</span></div>
+        <pre><code><span class="c">// ── Creating an object ───────────────────────────</span>
+<span class="k">const</span> <span class="v">user</span> <span class="p">= {</span>
+  <span class="v">id</span><span class="p">:</span>    <span class="n">1</span><span class="p">,</span>
+  <span class="v">name</span><span class="p">:</span>  <span class="s">"Hari"</span><span class="p">,</span>
+  <span class="v">email</span><span class="p">:</span> <span class="s">"hari@example.com"</span><span class="p">,</span>
+  <span class="v">role</span><span class="p">:</span>  <span class="s">"developer"</span><span class="p">,</span>
+  <span class="fn">greet</span><span class="p">:</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>             <span class="c">// method</span>
+    <span class="k">return</span> <span class="s">`Hi, I'm <span class="p">${</span><span class="k">this</span><span class="p">.</span>name<span class="p">}</span>`</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c">// Accessing properties</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>user<span class="p">.</span>name<span class="p">);</span>           <span class="c">// "Hari"     (dot notation)</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>user<span class="p">[</span><span class="s">'email'</span><span class="p">]);</span>       <span class="c">// bracket notation</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>user<span class="p">.</span><span class="fn">greet</span><span class="p">());</span>        <span class="c">// "Hi, I'm Hari"</span>
+
+<span class="c">// Adding / updating / deleting</span>
+user<span class="p">.</span>city    <span class="p">=</span> <span class="s">"Hyderabad"</span><span class="p">;</span>       <span class="c">// add new key</span>
+user<span class="p">.</span>role   <span class="p">=</span> <span class="s">"lead developer"</span><span class="p">;</span>   <span class="c">// update</span>
+<span class="k">delete</span> user<span class="p">.</span>email<span class="p">;</span>               <span class="c">// remove key</span>
+
+<span class="c">// ── JSON ──────────────────────────────────────────</span>
+<span class="c">// JSON is a string format used to send data to/from servers</span>
+
+<span class="c">// Object → JSON string (serialise)</span>
+<span class="k">const</span> <span class="v">jsonString</span> <span class="p">=</span> JSON<span class="p">.</span><span class="fn">stringify</span><span class="p">(</span>user<span class="p">);</span>
+<span class="c">// → '{"id":1,"name":"Hari","role":"lead developer","city":"Hyderabad"}'</span>
+
+<span class="c">// JSON string → Object (parse)</span>
+<span class="k">const</span> <span class="v">parsed</span> <span class="p">=</span> JSON<span class="p">.</span><span class="fn">parse</span><span class="p">(</span><span class="v">jsonString</span><span class="p">);</span>
+<span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>parsed<span class="p">.</span>city<span class="p">);</span>          <span class="c">// "Hyderabad"</span></code></pre>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════ SECTION 3 – JQUERY ════════════ -->
+  <section class="section" id="s3">
+    <div class="section-header">
+      <span class="section-num num-jq">3</span>
+      <h2>jQuery — Write Less, Do More</h2>
+    </div>
+    <p>jQuery is a library that wraps vanilla JS into shorter, cross-browser-safe syntax. First include it in your HTML:</p>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>include jQuery</span></div>
+      <pre><code><span class="c">&lt;!-- In &lt;head&gt; or just before &lt;/body&gt; --&gt;</span>
+<span class="t">&lt;script</span> <span class="t">src=</span><span class="s">"https://code.jquery.com/jquery-3.7.1.min.js"</span><span class="t">&gt;&lt;/script&gt;</span></code></pre>
+    </div>
+
+    <!-- Selectors -->
+    <div class="topic" id="s3-select">
+      <h3>3.1 &nbsp;jQuery Selectors — The $() function <span class="label label-jq">jQuery</span></h3>
+
+      <div class="box box-why">
+        <div class="box-label">Why</div>
+        <span class="ic">$()</span> is jQuery's power tool. It's like <span class="ic">document.querySelector</span> but can select anything — IDs, classes, tags, attributes, nth-children — in a single consistent syntax.
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>selectors.js</span></div>
+        <pre><code><span class="c">// Tag name</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'p'</span><span class="p">)</span>                    <span class="c">// all &lt;p&gt; elements</span>
+
+<span class="c">// ID  (prefix: #)</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#header'</span><span class="p">)</span>              <span class="c">// element with id="header"</span>
+
+<span class="c">// Class  (prefix: .)</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'.card'</span><span class="p">)</span>                <span class="c">// all elements with class="card"</span>
+
+<span class="c">// Attribute</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'input[type="email"]'</span><span class="p">)</span>  <span class="c">// input whose type is "email"</span>
+
+<span class="c">// Child / descendant</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#sidebar li'</span><span class="p">)</span>          <span class="c">// all &lt;li&gt; inside #sidebar</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'ul > li'</span><span class="p">)</span>              <span class="c">// direct children only</span>
+
+<span class="c">// First / last / nth</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'.card:first'</span><span class="p">)</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'.card:last'</span><span class="p">)</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'.card:eq(1)'</span><span class="p">)</span>           <span class="c">// second card (zero-indexed)</span>
+
+<span class="c">// Multiple selectors</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'h1, h2, h3'</span><span class="p">)</span>           <span class="c">// all headings at once</span>
+
+<span class="c">// this — the element that triggered the event</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'.card'</span><span class="p">).</span><span class="fn">on</span><span class="p">(</span><span class="s">'click'</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="fn">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="fn">addClass</span><span class="p">(</span><span class="s">'selected'</span><span class="p">);</span>  <span class="c">// only the clicked card</span>
+<span class="p">});</span></code></pre>
+      </div>
+    </div>
+
+    <!-- jQuery DOM -->
+    <div class="topic" id="s3-dom">
+      <h3>3.2 &nbsp;DOM Manipulation with jQuery <span class="label label-jq">jQuery</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>jquery-dom.js</span></div>
+        <pre><code><span class="c">// ── Read & write content ─────────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#result'</span><span class="p">).</span><span class="fn">text</span><span class="p">(</span><span class="s">'Plain text'</span><span class="p">);</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#result'</span><span class="p">).</span><span class="fn">html</span><span class="p">(</span><span class="s">'&lt;strong&gt;Bold&lt;/strong&gt;'</span><span class="p">);</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#name'</span><span class="p">).</span><span class="fn">val</span><span class="p">(</span><span class="s">'Hari'</span><span class="p">);</span>                 <span class="c">// set input value</span>
+<span class="k">const</span> <span class="v">v</span> <span class="p">=</span> <span class="fn">$</span><span class="p">(</span><span class="s">'#name'</span><span class="p">).</span><span class="fn">val</span><span class="p">();</span>             <span class="c">// get input value</span>
+
+<span class="c">// ── CSS & classes ────────────────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">css</span><span class="p">(</span><span class="s">'color'</span><span class="p">,</span> <span class="s">'red'</span><span class="p">);</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">css</span><span class="p">({</span> <span class="v">color</span><span class="p">:</span> <span class="s">'blue'</span><span class="p">,</span> <span class="v">fontSize</span><span class="p">:</span> <span class="s">'18px'</span> <span class="p">});</span>  <span class="c">// multiple</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">addClass</span><span class="p">(</span><span class="s">'active'</span><span class="p">);</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">removeClass</span><span class="p">(</span><span class="s">'hidden'</span><span class="p">);</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">toggleClass</span><span class="p">(</span><span class="s">'highlight'</span><span class="p">);</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">hasClass</span><span class="p">(</span><span class="s">'active'</span><span class="p">);</span>           <span class="c">// true / false</span>
+
+<span class="c">// ── Attributes ──────────────────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'img'</span><span class="p">).</span><span class="fn">attr</span><span class="p">(</span><span class="s">'src'</span><span class="p">,</span> <span class="s">'new.png'</span><span class="p">);</span>        <span class="c">// set</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'img'</span><span class="p">).</span><span class="fn">attr</span><span class="p">(</span><span class="s">'alt'</span><span class="p">);</span>                   <span class="c">// get</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#product-1'</span><span class="p">).</span><span class="fn">data</span><span class="p">(</span><span class="s">'price'</span><span class="p">);</span>         <span class="c">// get data-price</span>
+
+<span class="c">// ── Adding/removing elements ─────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#list'</span><span class="p">).</span><span class="fn">append</span><span class="p">(</span><span class="s">'&lt;li&gt;New item&lt;/li&gt;'</span><span class="p">);</span>    <span class="c">// inside, at end</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#list'</span><span class="p">).</span><span class="fn">prepend</span><span class="p">(</span><span class="s">'&lt;li&gt;First!&lt;/li&gt;'</span><span class="p">);</span>   <span class="c">// inside, at start</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">after</span><span class="p">(</span><span class="s">'&lt;p&gt;After box&lt;/p&gt;'</span><span class="p">);</span>    <span class="c">// sibling after</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#old'</span><span class="p">).</span><span class="fn">remove</span><span class="p">();</span>                      <span class="c">// delete element</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">empty</span><span class="p">();</span>                      <span class="c">// clear contents</span>
+
+<span class="c">// ── Chaining (multiple operations in one line) ───</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#result'</span><span class="p">)</span>
+  <span class="p">.</span><span class="fn">text</span><span class="p">(</span><span class="s">'Done!'</span><span class="p">)</span>
+  <span class="p">.</span><span class="fn">addClass</span><span class="p">(</span><span class="s">'success'</span><span class="p">)</span>
+  <span class="p">.</span><span class="fn">css</span><span class="p">(</span><span class="s">'fontWeight'</span><span class="p">,</span> <span class="s">'bold'</span><span class="p">);</span></code></pre>
+      </div>
+    </div>
+
+    <!-- jQuery Events -->
+    <div class="topic" id="s3-events">
+      <h3>3.3 &nbsp;Events in jQuery <span class="label label-jq">jQuery</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>jquery-events.js</span></div>
+        <pre><code><span class="c">// ── Document ready — best practice entry point ───</span>
+<span class="fn">$</span><span class="p">(</span>document<span class="p">).</span><span class="fn">ready</span><span class="p">(</span><span class="k">function</span><span class="p">() {</span>           <span class="c">// classic</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"DOM ready"</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="fn">$</span><span class="p">(()</span> <span class="p">=&gt; {</span> <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Short form"</span><span class="p">);</span> <span class="p">});</span>   <span class="c">// shorthand</span>
+
+<span class="c">// ── Click ────────────────────────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#myBtn'</span><span class="p">).</span><span class="fn">click</span><span class="p">(</span><span class="k">function</span><span class="p">() {</span>
+  <span class="fn">$</span><span class="p">(</span><span class="s">'#panel'</span><span class="p">).</span><span class="fn">toggle</span><span class="p">();</span>
+<span class="p">});</span>
+
+<span class="c">// ── on() — attaches any event ────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#myInput'</span><span class="p">).</span><span class="fn">on</span><span class="p">(</span><span class="s">'input'</span><span class="p">,</span> <span class="k">function</span><span class="p">() {</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="fn">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="fn">val</span><span class="p">());</span>
+<span class="p">});</span>
+
+<span class="c">// ── hover() — mouseover + mouseout ───────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'.card'</span><span class="p">).</span><span class="fn">hover</span><span class="p">(</span>
+  <span class="k">function</span><span class="p">()</span> <span class="p">{</span> <span class="fn">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="fn">addClass</span><span class="p">(</span><span class="s">'hovered'</span><span class="p">);</span>    <span class="p">},</span>  <span class="c">// over</span>
+  <span class="k">function</span><span class="p">()</span> <span class="p">{</span> <span class="fn">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="fn">removeClass</span><span class="p">(</span><span class="s">'hovered'</span><span class="p">);</span> <span class="p">}</span>   <span class="c">// out</span>
+<span class="p">);</span>
+
+<span class="c">// ── Delegated events (works on dynamically added elements) ──</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#list'</span><span class="p">).</span><span class="fn">on</span><span class="p">(</span><span class="s">'click'</span><span class="p">,</span> <span class="s">'li'</span><span class="p">,</span> <span class="k">function</span><span class="p">() {</span>
+  <span class="fn">alert</span><span class="p">(</span><span class="fn">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="fn">text</span><span class="p">());</span>
+<span class="p">});</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Effects -->
+    <div class="topic" id="s3-effects">
+      <h3>3.4 &nbsp;Effects &amp; Animations <span class="label label-jq">jQuery</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>effects.js</span></div>
+        <pre><code><span class="c">// ── Show / Hide ──────────────────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">show</span><span class="p">();</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">hide</span><span class="p">();</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">toggle</span><span class="p">();</span>                     <span class="c">// flip visibility</span>
+
+<span class="c">// ── Fade ─────────────────────────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">fadeIn</span><span class="p">(</span><span class="n">400</span><span class="p">);</span>                  <span class="c">// 400ms</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">fadeOut</span><span class="p">(</span><span class="s">'slow'</span><span class="p">);</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">fadeToggle</span><span class="p">();</span>
+
+<span class="c">// ── Slide ─────────────────────────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#menu'</span><span class="p">).</span><span class="fn">slideDown</span><span class="p">();</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#menu'</span><span class="p">).</span><span class="fn">slideUp</span><span class="p">();</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#menu'</span><span class="p">).</span><span class="fn">slideToggle</span><span class="p">(</span><span class="n">300</span><span class="p">);</span>
+
+<span class="c">// ── Animate any CSS property ──────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#box'</span><span class="p">).</span><span class="fn">animate</span><span class="p">({</span>
+  opacity<span class="p">:</span>  <span class="n">0.5</span><span class="p">,</span>
+  marginLeft<span class="p">:</span> <span class="s">'100px'</span><span class="p">,</span>
+  width<span class="p">:</span>    <span class="s">'200px'</span>
+<span class="p">},</span> <span class="n">600</span><span class="p">,</span> <span class="k">function</span><span class="p">() {</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Animation complete!"</span><span class="p">);</span>   <span class="c">// callback</span>
+<span class="p">});</span>
+
+<span class="c">// ── delay + chain animations ──────────────────────</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#msg'</span><span class="p">)</span>
+  <span class="p">.</span><span class="fn">fadeIn</span><span class="p">(</span><span class="n">300</span><span class="p">)</span>
+  <span class="p">.</span><span class="fn">delay</span><span class="p">(</span><span class="n">2000</span><span class="p">)</span>
+  <span class="p">.</span><span class="fn">fadeOut</span><span class="p">(</span><span class="n">300</span><span class="p">);</span>           <span class="c">// show for 2s then hide</span></code></pre>
+      </div>
+    </div>
+
+    <!-- jQuery Forms -->
+    <div class="topic" id="s3-forms">
+      <h3>3.5 &nbsp;Form Handling with jQuery <span class="label label-jq">jQuery</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>jquery-forms.js</span></div>
+        <pre><code><span class="fn">$</span><span class="p">(</span><span class="s">'#registrationForm'</span><span class="p">).</span><span class="fn">on</span><span class="p">(</span><span class="s">'submit'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="v">e</span><span class="p">) {</span>
+  e<span class="p">.</span><span class="fn">preventDefault</span><span class="p">();</span>
+
+  <span class="k">const</span> <span class="v">name</span>  <span class="p">=</span> <span class="fn">$</span><span class="p">(</span><span class="s">'#name'</span><span class="p">).</span><span class="fn">val</span><span class="p">().</span><span class="fn">trim</span><span class="p">();</span>
+  <span class="k">const</span> <span class="v">email</span> <span class="p">=</span> <span class="fn">$</span><span class="p">(</span><span class="s">'#email'</span><span class="p">).</span><span class="fn">val</span><span class="p">().</span><span class="fn">trim</span><span class="p">();</span>
+  <span class="k">const</span> <span class="v">role</span>  <span class="p">=</span> <span class="fn">$</span><span class="p">(</span><span class="s">'#role'</span><span class="p">).</span><span class="fn">val</span><span class="p">();</span>
+  <span class="k">const</span> <span class="v">gender</span><span class="p">=</span> <span class="fn">$</span><span class="p">(</span><span class="s">'input[name="gender"]:checked'</span><span class="p">).</span><span class="fn">val</span><span class="p">();</span>
+  <span class="k">const</span> <span class="v">agreed</span><span class="p">=</span> <span class="fn">$</span><span class="p">(</span><span class="s">'#terms'</span><span class="p">).</span><span class="fn">is</span><span class="p">(</span><span class="s">':checked'</span><span class="p">);</span>   <span class="c">// boolean</span>
+
+  <span class="k">if</span> <span class="p">(!</span><span class="v">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="fn">$</span><span class="p">(</span><span class="s">'#errorMsg'</span><span class="p">).</span><span class="fn">text</span><span class="p">(</span><span class="s">'Name is required'</span><span class="p">).</span><span class="fn">show</span><span class="p">();</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(!</span><span class="v">agreed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="fn">$</span><span class="p">(</span><span class="s">'#errorMsg'</span><span class="p">).</span><span class="fn">text</span><span class="p">(</span><span class="s">'You must agree to terms'</span><span class="p">).</span><span class="fn">show</span><span class="p">();</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="fn">$</span><span class="p">(</span><span class="s">'#errorMsg'</span><span class="p">).</span><span class="fn">hide</span><span class="p">();</span>
+  <span class="fn">$</span><span class="p">(</span><span class="s">'#successMsg'</span><span class="p">).</span><span class="fn">text</span><span class="p">(</span><span class="s">`Welcome, <span class="p">${</span>name<span class="p">}</span>!`</span><span class="p">).</span><span class="fn">fadeIn</span><span class="p">();</span>
+<span class="p">});</span>
+
+<span class="c">// Resetting a form</span>
+<span class="fn">$</span><span class="p">(</span><span class="s">'#registrationForm'</span><span class="p">)[</span><span class="n">0</span><span class="p">].</span><span class="fn">reset</span><span class="p">();</span>      <span class="c">// [0] gives native element</span></code></pre>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════ SECTION 4 – AJAX ════════════ -->
+  <section class="section" id="s4">
+    <div class="section-header">
+      <span class="section-num num-ajax">4</span>
+      <h2>AJAX — Communicating with Servers</h2>
+    </div>
+    <p>AJAX (<strong>Asynchronous JavaScript And XML</strong>) lets your page <em>send and receive data from a server without reloading</em>. This powers real-time search, login checks, saving data, loading content on scroll, etc.</p>
+
+    <div class="box box-why">
+      <div class="box-label">How it works</div>
+      Your page → sends HTTP request → Server processes → returns JSON → Your JS updates the page. All without a page reload.
+    </div>
+
+    <!-- fetch -->
+    <div class="topic" id="s4-fetch">
+      <h3>4.1 &nbsp;fetch() — Modern native AJAX <span class="label label-js">JS</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>fetch-get.js</span></div>
+        <pre><code><span class="c">// ── GET request — load data ──────────────────────</span>
+fetch<span class="p">(</span><span class="s">'https://jsonplaceholder.typicode.com/users/1'</span><span class="p">)</span>
+  <span class="p">.</span><span class="fn">then</span><span class="p">(</span><span class="v">response</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(!</span>response<span class="p">.</span>ok<span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="fn">Error</span><span class="p">(</span><span class="s">"HTTP error: "</span> <span class="p">+</span> response<span class="p">.</span>status<span class="p">);</span>
+    <span class="k">return</span> response<span class="p">.</span><span class="fn">json</span><span class="p">();</span>         <span class="c">// parse JSON</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="fn">then</span><span class="p">(</span><span class="v">data</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Name:"</span><span class="p">,</span> data<span class="p">.</span>name<span class="p">);</span>  <span class="c">// "Leanne Graham"</span>
+    document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="s">'result'</span><span class="p">).</span>textContent <span class="p">=</span> data<span class="p">.</span>name<span class="p">;</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="fn">catch</span><span class="p">(</span><span class="v">error</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="fn">console</span><span class="p">.</span><span class="fn">error</span><span class="p">(</span><span class="s">"Failed:"</span><span class="p">,</span> error<span class="p">);</span>
+  <span class="p">});</span>
+
+<span class="c">// ── Same using async/await (cleaner) ─────────────</span>
+<span class="k">async function</span> <span class="fn">loadUser</span><span class="p">(</span><span class="v">id</span><span class="p">) {</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="v">res</span>  <span class="p">=</span> <span class="k">await</span> <span class="fn">fetch</span><span class="p">(</span><span class="s">`https://jsonplaceholder.typicode.com/users/<span class="p">${</span>id<span class="p">}</span>`</span><span class="p">);</span>
+    <span class="k">const</span> <span class="v">data</span> <span class="p">=</span> <span class="k">await</span> res<span class="p">.</span><span class="fn">json</span><span class="p">();</span>
+    <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span>data<span class="p">.</span>name<span class="p">,</span> data<span class="p">.</span>email<span class="p">);</span>
+    <span class="k">return</span> data<span class="p">;</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="v">err</span><span class="p">) {</span>
+    <span class="fn">console</span><span class="p">.</span><span class="fn">error</span><span class="p">(</span><span class="s">"Error:"</span><span class="p">,</span> err<span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="fn">loadUser</span><span class="p">(</span><span class="n">1</span><span class="p">);</span></code></pre>
+      </div>
+
+      <div class="box box-out">
+        <div class="box-label">🖥 Console Output</div>
+        <code style="color:var(--accent3)">Name: Leanne Graham</code><br>
+        <code style="color:var(--accent3)">Leanne Graham  &nbsp; Sincere@april.biz</code>
+      </div>
+    </div>
+
+    <!-- POST -->
+    <div class="topic" id="s4-post">
+      <h3>4.2 &nbsp;POST Request — Sending data to a server <span class="label label-js">JS</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>fetch-post.js</span></div>
+        <pre><code><span class="k">async function</span> <span class="fn">createPost</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">const</span> <span class="v">payload</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="v">title</span><span class="p">:</span>  <span class="s">"My New Post"</span><span class="p">,</span>
+    <span class="v">body</span><span class="p">:</span>   <span class="s">"This is the content"</span><span class="p">,</span>
+    <span class="v">userId</span><span class="p">:</span> <span class="n">1</span>
+  <span class="p">};</span>
+
+  <span class="k">const</span> <span class="v">res</span> <span class="p">=</span> <span class="k">await</span> <span class="fn">fetch</span><span class="p">(</span><span class="s">'https://jsonplaceholder.typicode.com/posts'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="v">method</span><span class="p">:</span>  <span class="s">'POST'</span><span class="p">,</span>
+    <span class="v">headers</span><span class="p">:</span> <span class="p">{</span> <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span> <span class="p">},</span>
+    <span class="v">body</span><span class="p">:</span>    JSON<span class="p">.</span><span class="fn">stringify</span><span class="p">(</span>payload<span class="p">)</span>    <span class="c">// object → JSON string</span>
+  <span class="p">});</span>
+
+  <span class="k">const</span> <span class="v">data</span> <span class="p">=</span> <span class="k">await</span> res<span class="p">.</span><span class="fn">json</span><span class="p">();</span>
+  <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Created with ID:"</span><span class="p">,</span> data<span class="p">.</span>id<span class="p">);</span>  <span class="c">// 101</span>
+<span class="p">}</span></code></pre>
+      </div>
+    </div>
+
+    <!-- jQuery AJAX -->
+    <div class="topic" id="s4-jq">
+      <h3>4.3 &nbsp;jQuery AJAX — $.ajax(), $.get(), $.post() <span class="label label-jq">jQuery</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>jquery-ajax.js</span></div>
+        <pre><code><span class="c">// ── $.get() — simplest GET shorthand ─────────────</span>
+<span class="fn">$</span><span class="p">.</span><span class="fn">get</span><span class="p">(</span><span class="s">'https://jsonplaceholder.typicode.com/posts/1'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="v">data</span><span class="p">) {</span>
+  <span class="fn">$</span><span class="p">(</span><span class="s">'#result'</span><span class="p">).</span><span class="fn">text</span><span class="p">(</span>data<span class="p">.</span>title<span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c">// ── $.post() — POST shorthand ─────────────────────</span>
+<span class="fn">$</span><span class="p">.</span><span class="fn">post</span><span class="p">(</span>
+  <span class="s">'https://jsonplaceholder.typicode.com/posts'</span><span class="p">,</span>
+  <span class="p">{</span> <span class="v">title</span><span class="p">:</span> <span class="s">'Test'</span><span class="p">,</span> <span class="v">userId</span><span class="p">:</span> <span class="n">1</span> <span class="p">},</span>
+  <span class="k">function</span><span class="p">(</span><span class="v">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Created:"</span><span class="p">,</span> data<span class="p">.</span>id<span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="c">// ── $.ajax() — full control over every option ─────</span>
+<span class="fn">$</span><span class="p">.</span><span class="fn">ajax</span><span class="p">({</span>
+  <span class="v">url</span><span class="p">:</span>      <span class="s">'https://jsonplaceholder.typicode.com/users'</span><span class="p">,</span>
+  <span class="v">type</span><span class="p">:</span>     <span class="s">'GET'</span><span class="p">,</span>                  <span class="c">// or 'POST', 'PUT', 'DELETE'</span>
+  <span class="v">dataType</span><span class="p">:</span> <span class="s">'json'</span><span class="p">,</span>                 <span class="c">// expected response type</span>
+  <span class="v">data</span><span class="p">:</span>     <span class="p">{</span> <span class="v">limit</span><span class="p">:</span> <span class="n">5</span> <span class="p">},</span>            <span class="c">// query params (GET) or body (POST)</span>
+  <span class="v">headers</span><span class="p">:</span>  <span class="p">{</span> <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'Bearer TOKEN'</span> <span class="p">},</span>
+
+  <span class="fn">beforeSend</span><span class="p">:</span> <span class="k">function</span><span class="p">() {</span>
+    <span class="fn">$</span><span class="p">(</span><span class="s">'#loader'</span><span class="p">).</span><span class="fn">show</span><span class="p">();</span>            <span class="c">// show spinner</span>
+  <span class="p">},</span>
+
+  <span class="fn">success</span><span class="p">:</span> <span class="k">function</span><span class="p">(</span><span class="v">data</span><span class="p">) {</span>
+    <span class="fn">$</span><span class="p">(</span><span class="s">'#loader'</span><span class="p">).</span><span class="fn">hide</span><span class="p">();</span>
+    <span class="c">// Render each user as a list item</span>
+    <span class="k">let</span> <span class="v">html</span> <span class="p">=</span> <span class="s">''</span><span class="p">;</span>
+    data<span class="p">.</span><span class="fn">forEach</span><span class="p">(</span><span class="v">u</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="v">html</span> <span class="p">+=</span> <span class="s">`&lt;li&gt;&lt;strong&gt;<span class="p">${</span>u<span class="p">.</span>name<span class="p">}</span>&lt;/strong&gt; — <span class="p">${</span>u<span class="p">.</span>email<span class="p">}</span>&lt;/li&gt;`</span><span class="p">;</span>
+    <span class="p">});</span>
+    <span class="fn">$</span><span class="p">(</span><span class="s">'#userList'</span><span class="p">).</span><span class="fn">html</span><span class="p">(</span><span class="s">'&lt;ul&gt;'</span> <span class="p">+</span> <span class="v">html</span> <span class="p">+</span> <span class="s">'&lt;/ul&gt;'</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="fn">error</span><span class="p">:</span> <span class="k">function</span><span class="p">(</span><span class="v">xhr</span><span class="p">,</span> <span class="v">status</span><span class="p">,</span> <span class="v">err</span><span class="p">) {</span>
+    <span class="fn">$</span><span class="p">(</span><span class="s">'#loader'</span><span class="p">).</span><span class="fn">hide</span><span class="p">();</span>
+    <span class="fn">console</span><span class="p">.</span><span class="fn">error</span><span class="p">(</span><span class="s">"AJAX Error:"</span><span class="p">,</span> <span class="v">status</span><span class="p">,</span> <span class="v">err</span><span class="p">);</span>
+    <span class="fn">$</span><span class="p">(</span><span class="s">'#result'</span><span class="p">).</span><span class="fn">text</span><span class="p">(</span><span class="s">"Failed to load data."</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="fn">complete</span><span class="p">:</span> <span class="k">function</span><span class="p">() {</span>
+    <span class="fn">console</span><span class="p">.</span><span class="fn">log</span><span class="p">(</span><span class="s">"Request finished (success or error)"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span></code></pre>
+      </div>
+
+      <div class="output-block">
+        <div class="output-header">Output — User list rendered into #userList</div>
+        <div class="output-body">
+          <ul style="font-size:13px;line-height:1.8">
+            <li><strong>Leanne Graham</strong> — Sincere@april.biz</li>
+            <li><strong>Ervin Howell</strong> — Shanna@melissa.tv</li>
+            <li><strong>Clementine Bauch</strong> — Nathan@yesenia.net</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Handling -->
+    <div class="topic" id="s4-errors">
+      <h3>4.4 &nbsp;Error Handling &amp; Loading States <span class="label label-ajax">AJAX</span></h3>
+
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>full-pattern.js</span></div>
+        <pre><code><span class="c">// Full pattern: loading state + error handling + rendering</span>
+<span class="k">async function</span> <span class="fn">fetchAndRender</span><span class="p">(</span><span class="v">url</span><span class="p">,</span> <span class="v">containerId</span><span class="p">) {</span>
+  <span class="k">const</span> <span class="v">container</span> <span class="p">=</span> document<span class="p">.</span><span class="fn">getElementById</span><span class="p">(</span><span class="v">containerId</span><span class="p">);</span>
+
+  <span class="c">// Step 1: Show loading state</span>
+  container<span class="p">.</span>innerHTML <span class="p">=</span> <span class="s">'&lt;p&gt;⏳ Loading…&lt;/p&gt;'</span><span class="p">;</span>
+
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="c">// Step 2: Make the request</span>
+    <span class="k">const</span> <span class="v">res</span> <span class="p">=</span> <span class="k">await</span> <span class="fn">fetch</span><span class="p">(</span><span class="v">url</span><span class="p">);</span>
+
+    <span class="c">// Step 3: Check HTTP status</span>
+    <span class="k">if</span> <span class="p">(!</span>res<span class="p">.</span>ok<span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="fn">Error</span><span class="p">(</span><span class="s">`Error <span class="p">${</span>res<span class="p">.</span>status<span class="p">}</span>: <span class="p">${</span>res<span class="p">.</span>statusText<span class="p">}</span>`</span><span class="p">);</span>
+
+    <span class="c">// Step 4: Parse</span>
+    <span class="k">const</span> <span class="v">data</span> <span class="p">=</span> <span class="k">await</span> res<span class="p">.</span><span class="fn">json</span><span class="p">();</span>
+
+    <span class="c">// Step 5: Render success</span>
+    container<span class="p">.</span>innerHTML <span class="p">=</span> <span class="s">`
+      &lt;div class="card"&gt;
+        &lt;h3&gt;<span class="p">${</span>data<span class="p">.</span>name<span class="p">}</span>&lt;/h3&gt;
+        &lt;p&gt;<span class="p">${</span>data<span class="p">.</span>email<span class="p">}</span>&lt;/p&gt;
+      &lt;/div&gt;
+    `</span><span class="p">;</span>
+
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="v">err</span><span class="p">) {</span>
+    <span class="c">// Step 6: Render error state</span>
+    container<span class="p">.</span>innerHTML <span class="p">=</span> <span class="s">`&lt;p style="color:red"&gt;❌ <span class="p">${</span>err<span class="p">.</span>message<span class="p">}</span>&lt;/p&gt;`</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="fn">fetchAndRender</span><span class="p">(</span><span class="s">'https://jsonplaceholder.typicode.com/users/1'</span><span class="p">,</span> <span class="s">'result'</span><span class="p">);</span></code></pre>
+      </div>
+
+      <div class="box box-tip">
+        <div class="box-label">💡 HTTP Status Codes you'll encounter</div>
+        <strong>200</strong> OK — success &nbsp;|&nbsp; <strong>201</strong> Created — POST success &nbsp;|&nbsp; <strong>400</strong> Bad Request — wrong data sent &nbsp;|&nbsp; <strong>401</strong> Unauthorized — missing/bad token &nbsp;|&nbsp; <strong>404</strong> Not Found &nbsp;|&nbsp; <strong>500</strong> Server Error
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Quick Reference ════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num num-ajax" style="background:rgba(52,211,153,.15);color:var(--accent3)">✓</span>
+      <h2>Quick Reference Cheat Sheet</h2>
+    </div>
+
+    <table>
+      <thead><tr><th>Task</th><th>Vanilla JS</th><th>jQuery</th></tr></thead>
+      <tbody>
+        <tr><td>Select by ID</td><td><code>getElementById('x')</code></td><td><code>$('#x')</code></td></tr>
+        <tr><td>Select by class</td><td><code>querySelectorAll('.x')</code></td><td><code>$('.x')</code></td></tr>
+        <tr><td>Get/set text</td><td><code>.textContent</code></td><td><code>.text()</code></td></tr>
+        <tr><td>Get/set HTML</td><td><code>.innerHTML</code></td><td><code>.html()</code></td></tr>
+        <tr><td>Get/set input value</td><td><code>.value</code></td><td><code>.val()</code></td></tr>
+        <tr><td>Set CSS</td><td><code>.style.color = 'red'</code></td><td><code>.css('color','red')</code></td></tr>
+        <tr><td>Add class</td><td><code>.classList.add('x')</code></td><td><code>.addClass('x')</code></td></tr>
+        <tr><td>Listen to click</td><td><code>.addEventListener('click',fn)</code></td><td><code>.on('click',fn) or .click(fn)</code></td></tr>
+        <tr><td>Hide element</td><td><code>.style.display='none'</code></td><td><code>.hide()</code></td></tr>
+        <tr><td>Show element</td><td><code>.style.display='block'</code></td><td><code>.show()</code></td></tr>
+        <tr><td>AJAX GET</td><td><code>fetch(url).then(r=>r.json())</code></td><td><code>$.get(url, fn)</code></td></tr>
+        <tr><td>AJAX POST</td><td><code>fetch(url,{method:'POST',…})</code></td><td><code>$.post(url, data, fn)</code></td></tr>
+        <tr><td>Stop form submit</td><td><code>e.preventDefault()</code></td><td><code>e.preventDefault()</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<!-- Scroll to top -->
+<button id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+    document.getElementById('top-btn').classList.toggle('visible', doc.scrollTop > 300);
+  });
+
+  // Sidebar active link highlighting
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('#sidebar nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`#sidebar nav a[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

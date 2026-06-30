@@ -1,0 +1,326 @@
+:root {
+    --primary: #1A73E8;
+    --primary-dark: #1558D0;
+    --accent: #FF6F00;
+
+    --text: #212121;
+    --text-muted: #757575;
+
+    --bg: #F0F4F8;
+    --white: #FFFFFF;
+
+    --shadow: 0 4px 20px rgba(0,0,0,0.10);
+
+    --radius: 12px;
+
+    --font: 'Poppins', sans-serif;
+}
+/* Reset & Base */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font);
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+/* Header */
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background:ar(--primary v);
+
+    padding: 16px 48px;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.nav-links a {
+    color: rgba(255,255,255,0.85);
+
+    margin-left: 28px;
+
+    font-weight: 500;
+
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+/* Hero */
+
+.hero {
+    background:
+    linear-gradient(
+        135deg,
+        #1A73E8 0%,
+        #0D47A1 60%,
+        #6200EA 100%
+    );
+
+    color: white;
+
+    text-align: center;
+
+    padding: 100px 20px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+
+    margin-bottom: 16px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+
+    opacity: 0.88;
+
+    margin-bottom: 32px;
+}
+.btn {
+    display: inline-block;
+
+    background: var(--accent);
+
+    color: white;
+
+    padding: 14px 32px;
+
+    border-radius: 50px;
+
+    font-weight: 600;
+
+    border: none;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+.posts-section {
+    padding: 80px 40px;
+}
+
+.section-title {
+    text-align: center;
+
+    font-size: 2rem;
+
+    margin-bottom: 48px;
+
+    color: var(--primary);
+}
+.posts-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(300px, 1fr));
+
+    gap: 32px;
+}
+.card {
+    background: var(--white);
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+
+    box-shadow:
+        0 12px 40px rgba(0,0,0,0.18);
+}
+
+.card img {
+    width: 100%;
+
+    height: 220px;
+
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 24px;
+}
+.tag {
+    background: var(--primary);
+
+    color: white;
+
+    padding: 4px 12px;
+
+    border-radius: 20px;
+
+    font-size: 0.75rem;
+
+    font-weight: 600;
+}
+
+.tag-design {
+    background: var(--accent);
+}
+.card-content h3 {
+    margin: 12px 0 8px;
+
+    font-size: 1.1rem;
+}
+
+.card-content p {
+    color: var(--text-muted);
+
+    font-size: 0.95rem;
+}
+
+.read-more {
+    color: var(--primary);
+
+    font-weight: 600;
+
+    margin-top: 16px;
+
+    display: inline-block;
+}
+.contact-section {
+    padding: 80px 40px;
+
+    background: white;
+
+    max-width: 700px;
+
+    margin: 0 auto;
+}
+.form-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 16px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    font-weight: 600;
+
+    margin-bottom: 6px;
+}
+.form-group input,
+.form-group textarea {
+
+    width: 100%;
+
+    padding: 12px 16px;
+
+    border: 2px solid #E0E0E0;
+
+    border-radius: 8px;
+
+    font-size: 1rem;
+
+    transition: border-color 0.3s;
+
+    outline: none;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(26,115,232,0.15);
+}
+.site-footer {
+
+    background: #0D1117;
+
+    color: rgba(255,255,255,0.7);
+
+    text-align: center;
+
+    padding: 40px;
+}
+
+.footer-links a {
+
+    color: rgba(255,255,255,0.6);
+
+    margin: 0 12px;
+
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+@media (max-width: 768px) {
+
+    .site-header {
+        padding: 12px 20px;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .posts-section {
+        padding: 40px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-links a {
+        margin-left: 12px;
+        font-size: 0.95rem;
+    }
+}  

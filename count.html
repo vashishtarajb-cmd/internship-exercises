@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <p>clicks:<span id="count">0</span></p>
+        <button onclick="addCount()">click me</button>
+        <button onclick="Reset()">reset</button>
+        <script>
+            let counter = 0;
+             function addCount(){
+                counter++;
+                document.getElementById('count').innerHTML=counter;
+             }
+             function Reset(){
+                counter = 0;
+                document.getElementById('count').innerHTML=counter;
+                
+             }
+        </script>
+    </body>
+</html>

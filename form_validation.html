@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        <input type="text" id="name" placeholder="Enter your name">
+        <input type="email" id="email" placeholder="enter your email">
+        <button onclick="validate()">Submit</button>
+        <div id="output"></div>
+
+        <script>
+            function validate(){
+                let name =document.getElementById('name').value;
+                let mail =document.getElementById('email').value;
+                let out = document.getElementById('output');
+
+
+                if(name === ''&&!mail.includes('@')){
+                    out.textContent='enter name and email';
+                    return;
+                }
+
+                if(name ===''){
+                    out.textContent='name is required';
+                    return;
+                    
+
+                }
+                if(!mail.includes('@')){
+                    out.textContent='enter a valid mail';
+                    return;
+                    
+
+                }
+                
+                out.textContent=`hello my name is ${name},my mail is ${mail}`
+            }
+        </script>
+    </body>
+</html>

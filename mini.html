@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="regPage">
+            <h2>Register</h2>
+            <input id="fName" placeholder="Enter Name"><br><br>
+            <input id="fEmail" placeholder="Enter Email"><br><br>
+            <input id="fPass" placeholder="Enter Password"><br><br>
+            <input id="fConf" placeholder="confirm Password"><br><br>
+            <button onclick="register()">Register</button>
+            <p id="regErr" style="color: red;"></p>
+            
+        </div>
+        <div id="loginPage" style="display: none;">
+            <h2>Login</h2>
+            <input id="lEmail" placeholder="Enter email"><br><br>
+            <input id="lPass" placeholder="enter password" type="password"><br><br>
+            <button onclick="login()">Login</button>
+            <p id="loginErr" style="color: red;"></p>
+        </div>
+        <div id="dashboard" style="display: none;">
+            <h2>Dashboard</h2>
+            <div id="dashData"></div>
+        </div>
+        <script>
+            function getVal(id){
+    return document.getElementById(id).value.trim();
+}
+
+function showErr(msg){
+    document.getElementById("regErr").textContent = msg;
+}
+
+function showLoginErr(msg){
+    document.getElementById("loginErr").textContent = msg;
+}
+
+function showDashboard(user){
+    document.getElementById("dashData").innerHTML =
+        `<h3>Welcome ${user.name}</h3>
+         <p>Email : ${user.email}</p>`;
+
+    navigate("dashboard");
+}
+
+  // ── REGISTER ──────────────────────────────
+  function register() {
+    let name  = getVal("fName");
+    let email = getVal("fEmail");
+    let pass  = getVal("fPass");
+    let conf  = getVal("fConf");
+
+    // Validation chain
+    if (!name)               return showErr("Name is required");
+    if (!email.includes("@")) return showErr("Invalid email");
+    if (pass.length < 6)      return showErr("Password min 6 chars");
+    if (pass !== conf)         return showErr("Passwords do not match");
+
+    // Save user to localStorage
+    localStorage.setItem("appUser",
+      JSON.stringify({ name, email, pass }));
+
+    navigate("loginPage");   // go to login
+  }
+
+  // ── LOGIN ─────────────────────────────────
+  function login() {
+    let saved = JSON.parse(localStorage.getItem("appUser"));
+    if (!saved) return showLoginErr("Please register first");
+
+    let email = getVal("lEmail");
+    let pass  = getVal("lPass");
+
+    if (email === saved.email && pass === saved.pass) {
+      showDashboard(saved);
+    } else {
+      showLoginErr("Incorrect email or password");
+    }
+  }
+
+  // ── NAVIGATE between pages ─────────────────
+  function navigate(pageId) {
+    ["regPage", "loginPage", "dashboard"].forEach(id => {
+      document.getElementById(id).style.display =
+        id === pageId ? "block" : "none";
+    });
+  }
+
+
+        </script>
+    </body>
+</html>

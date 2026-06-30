@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+age:<input type="number" id="nj" placeholder="enter your age here">
+<button onclick="checkAge()">check</button>
+<p id="output"></p>
+<button id="ff">click me</button>
+<script>
+    let btn= document.getElementById('ff');
+    btn.addEventListener('click',function(){
+        alert('boom!');
+    });
+    function checkAge(){
+        let age=parseInt(document.getElementById('nj').value);
+         let out=document.getElementById('output');
+        
+         if(age<1 || age>120){
+            out.textContent='please enter a valid age';
+            out.style.color='orange';
+
+         }else if(age<18){
+            out.textContent='you r a minor';
+            out.style.color='red';
+         }else if(age<60){
+            out.textContent='you r n adult';
+            out.style.color='green';
+
+         }else{
+            out.textContent='your an senior citizen';
+            out.style.color="blue";
+         }
+    }
+</script>
+
+</body>
+</html> 

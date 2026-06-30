@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <button id="btn">start</button>
+        <p id="demo">wait</p>
+        <script>
+           
+           const btn=document.getElementById('btn');
+           btn.addEventListener('click',function (){
+            setTimeout(showMsg,2000);
+
+           });
+           function showMsg(){
+            document.getElementById('demo').innerHTML='hello after 2 seconds';
+           }
+
+            
+           
+        </script>
+    </body>
+    
+</html>

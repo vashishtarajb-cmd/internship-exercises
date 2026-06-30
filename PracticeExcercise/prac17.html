@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('#hide').click(function(){
+                    $('p').hide(1000);
+                });
+                $('#show').click(function(){
+                    $('p').show(1000);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <p>click me</p>
+        <button id="hide" type="button">hide</button>
+        <button id="show" type="button">show</button>
+    </body>
+</html>

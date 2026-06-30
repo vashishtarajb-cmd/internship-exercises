@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <body>
+
+<h2>Division Example</h2>
+
+<input type="number" id="numA" placeholder="Enter first number">
+
+<input type="number" id="numB" placeholder="Enter second number">
+
+<button onclick="divideNumbers()">Divide</button>
+
+<div id="divOut"></div>
+
+<hr>
+
+<h2>JSON Parser</h2>
+
+<textarea id="jsonInput" rows="6" cols="40"
+placeholder='Example: {"name":"John","age":20}'></textarea>
+
+<br><br>
+
+<button onclick="parseJSON()">Parse JSON</button>
+
+<div id="jsonOut"></div>
+
+</body>
+<script>
+  function divideNumbers() {
+    let a = parseFloat(document.getElementById("numA").value);
+    let b = parseFloat(document.getElementById("numB").value);
+    let out = document.getElementById("divOut");
+
+    try {
+      // Manually throw an error for division by zero
+      if (isNaN(a) || isNaN(b)) {
+        throw new Error("Both inputs must be valid numbers.");
+      }
+      if (b === 0) {
+        throw new Error("Cannot divide by zero!");
+      }
+
+      let result = a / b;
+      out.textContent = `✅ ${a} ÷ ${b} = ${result}`;
+      out.className = "output-box";
+
+    } catch (error) {
+      // This runs when an error is thrown
+      out.textContent = `❌ Error: ${error.message}`;
+      out.className = "output-box error";
+
+    } finally {
+      // This ALWAYS runs
+      console.log("Division attempted.");
+    }
+  }
+
+  // JSON Parse error example
+  function parseJSON() {
+    let input = document.getElementById("jsonInput").value;
+    let out   = document.getElementById("jsonOut");
+    try {
+      let data = JSON.parse(input);
+      out.textContent = "✅ Valid JSON: " + JSON.stringify(data, null, 2);
+      out.className = "output-box";
+    } catch (e) {
+      out.textContent = "❌ Invalid JSON: " + e.message;
+      out.className = "output-box error";
+    }
+  }
+</script>
+</html>

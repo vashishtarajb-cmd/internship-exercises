@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function (){
+                $('p').on({mouseenter: function(){
+                    $(this).css('background-color','lightgrey');
+                },
+            mouseleave:function(){
+                $(this).css('background-color','yellow');
+            },
+            click:function(){
+                $(this).css('background-color','red');
+            },
+            });
+            });
+               
+        </script>
+    </head>
+    <body>
+<p>click on these</p>
+        
+    </body>
+</html>

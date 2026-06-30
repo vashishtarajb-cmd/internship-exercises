@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="showPrices()">Show Prices</button>
+
+<div id="priceOut"></div>
+
+<script>
+
+const products = [
+    {name:'Laptop', price:50000},
+    {name:'Phone', price:20000},
+    {name:'Tablet', price:15000},
+    {name:'Watch', price:8000}
+];
+
+const withGst = products.map(item => ({
+    ...item,
+    gstPrice: Math.round(item.price * 1.18)
+}));
+
+function showPrices() {
+
+    let html = `<table border="1">
+        <tr>
+            <th>Product</th>
+            <th>Base Price</th>
+            <th>+18% GST</th>
+        </tr>`;
+
+    withGst.forEach(p => {
+
+        html += `<tr>
+                    <td>${p.name}</td>
+                    <td>${p.price.toLocaleString()}</td>
+                    <td>${p.gstPrice.toLocaleString()}</td>
+                 </tr>`;
+
+    });
+
+    html += "</table>";
+
+    document.getElementById("priceOut").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>

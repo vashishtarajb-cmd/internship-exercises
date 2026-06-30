@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="showMarks()">show marks</button>
+    <div id="marksOut"></div>
+    <script>
+      const students =[
+        {name:'ravi',marks:92},
+        {name:'priya',marks:87},
+        {name:'anil',marks:34},
+        {name:'hussain',marks:55},
+      ];
+      function getGrade(m){
+        if(m>=90) return 'A+';
+        if(m>=75) return 'A';
+        if(m>=60) return 'B';
+        if(m>=45) return 'C';
+        return 'fail';
+
+
+      }
+      function showMarks(){
+        let html = '<table><tr><th>Name</th><th>Marks</th><th>Grade</th></tr>';
+
+          for(let i=0;i<students.length;i++){
+            let s  =students[i];
+            let g =getGrade(s.marks);
+            html += `<tr><td>${s.name}</td>
+                     <td>${s.marks}</td>
+                     <td>${g}</td></tr>`;
+          }
+          html+='</table>';
+          document.getElementById('marksOut').innerHTML =html;
+      }
+    </script>
+  </body>
+</html>

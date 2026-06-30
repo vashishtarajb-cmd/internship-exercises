@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML + JavaScript – 10 Beginner Programs</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    color: #1a202c;
+    line-height: 1.7;
+  }
+
+  /* ── Header ── */
+  .hero {
+    background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+    color: #fff;
+    padding: 48px 40px 40px;
+    text-align: center;
+  }
+  .hero h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; }
+  .hero p  { font-size: 1.05rem; opacity: .88; max-width: 620px; margin: 0 auto; }
+  .badge-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+  .badge {
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: .82rem;
+    font-weight: 500;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: #fff;
+    border-left: 4px solid #2b6cb0;
+    border-radius: 8px;
+    margin: 32px auto;
+    max-width: 900px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+  }
+  .toc h2 { font-size: 1.1rem; color: #2b6cb0; margin-bottom: 14px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 6px 0; }
+  .toc a  { color: #2b6cb0; text-decoration: none; font-weight: 500; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* ── Program card ── */
+  .programs { max-width: 900px; margin: 0 auto 48px; padding: 0 16px; }
+
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    margin-bottom: 40px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: linear-gradient(90deg, #2b6cb0, #3182ce);
+    color: #fff;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .card-number {
+    background: rgba(255,255,255,.25);
+    border-radius: 50%;
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 700; flex-shrink: 0;
+  }
+  .card-header h2 { font-size: 1.15rem; font-weight: 600; }
+  .card-header .topic { font-size: .8rem; opacity: .8; margin-top: 2px; }
+
+  .card-body { padding: 24px; }
+
+  /* concept box */
+  .concept {
+    background: #ebf8ff;
+    border-left: 4px solid #3182ce;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    font-size: .93rem;
+    color: #2c5282;
+  }
+  .concept strong { display: block; margin-bottom: 4px; color: #1a365d; }
+
+  /* source code */
+  .code-label {
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #718096;
+    margin: 16px 0 6px;
+  }
+  pre {
+    background: #1a202c;
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: .87rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+    margin-bottom: 18px;
+  }
+  .kw  { color: #fc8181; }   /* keywords */
+  .fn  { color: #68d391; }   /* functions */
+  .str { color: #f6e05e; }   /* strings */
+  .cm  { color: #718096; font-style: italic; } /* comments */
+  .nm  { color: #76e4f7; }   /* numbers */
+  .var { color: #fbb6ce; }   /* variable names */
+
+  /* live demo */
+  .demo-label {
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #718096;
+    margin-bottom: 8px;
+  }
+  .demo {
+    border: 2px dashed #bee3f8;
+    border-radius: 8px;
+    padding: 20px;
+    background: #f7fafc;
+    margin-bottom: 16px;
+  }
+
+  /* output box */
+  .output-box {
+    background: #f0fff4;
+    border: 1px solid #9ae6b4;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: monospace;
+    font-size: .9rem;
+    color: #276749;
+    margin-top: 10px;
+    min-height: 36px;
+    white-space: pre-wrap;
+  }
+  .output-box.error { background: #fff5f5; border-color: #fc8181; color: #c53030; }
+
+  /* form elements */
+  input[type=text], input[type=email], input[type=password],
+  input[type=number], select, textarea {
+    width: 100%; padding: 9px 12px;
+    border: 1.5px solid #cbd5e0; border-radius: 6px;
+    font-size: .95rem; font-family: inherit;
+    margin-bottom: 10px; outline: none;
+    transition: border .2s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: #3182ce; }
+  .form-group label {
+    display: block; font-size: .88rem;
+    font-weight: 600; color: #4a5568; margin-bottom: 4px;
+  }
+  .form-group { margin-bottom: 14px; }
+  .err-msg { color: #c53030; font-size: .82rem; margin-top: -6px; margin-bottom: 8px; display: none; }
+
+  button {
+    background: #2b6cb0; color: #fff;
+    border: none; border-radius: 6px;
+    padding: 10px 22px; font-size: .95rem;
+    cursor: pointer; font-weight: 600;
+    transition: background .2s, transform .1s;
+  }
+  button:hover  { background: #2c5282; }
+  button:active { transform: scale(.97); }
+
+  .btn-danger { background: #c53030; }
+  .btn-danger:hover { background: #9b2c2c; }
+  .btn-success { background: #276749; }
+  .btn-success:hover { background: #1c4532; }
+
+  /* table */
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: .92rem; }
+  th { background: #2b6cb0; color: #fff; padding: 10px 12px; text-align: left; }
+  td { padding: 9px 12px; border-bottom: 1px solid #e2e8f0; }
+  tr:hover td { background: #ebf8ff; }
+
+  /* step list */
+  .steps { padding-left: 20px; }
+  .steps li { margin: 6px 0; font-size: .93rem; color: #4a5568; }
+
+  /* footer */
+  footer {
+    text-align: center;
+    padding: 32px 20px;
+    color: #718096;
+    font-size: .88rem;
+    background: #fff;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  /* user card */
+  .user-card {
+    background: linear-gradient(135deg, #ebf8ff, #f0fff4);
+    border: 1px solid #bee3f8;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    display: none;
+  }
+  .user-card h3 { color: #2b6cb0; margin-bottom: 8px; }
+  .user-card p  { font-size: .92rem; margin: 3px 0; }
+
+  /* highlight */
+  .highlight { background: #fffbeb; border-left: 4px solid #ecc94b; padding: 10px 14px; border-radius: 6px; font-size: .9rem; margin-bottom: 14px; }
+
+  /* responsive */
+  @media(max-width:600px) {
+    .hero h1 { font-size: 1.5rem; }
+    .card-body { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ HERO ═══════════════════════════════════════════ -->
+<div class="hero">
+  <h1>HTML + JavaScript — 10 Beginner Programs</h1>
+  <p>Each program includes a concept explanation, full source code with syntax highlighting, and a live interactive output you can run right here in the browser.</p>
+  <div class="badge-row">
+    <span class="badge">Forms &amp; Validation</span>
+    <span class="badge">Events</span>
+    <span class="badge">Arrays &amp; .map()</span>
+    <span class="badge">Loops</span>
+    <span class="badge">Registration &amp; Login</span>
+    <span class="badge">Error Handling</span>
+    <span class="badge">Lists</span>
+    <span class="badge">DOM Manipulation</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ TOC ════════════════════════════════════════════ -->
+<div class="toc">
+  <h2>📋 Table of Contents</h2>
+  <ol>
+    <li><a href="#p1">Form Validation — Name &amp; Email</a></li>
+    <li><a href="#p2">Events — Button Click Counter</a></li>
+    <li><a href="#p3">Arrays &amp; Loops — Student Marks List</a></li>
+    <li><a href="#p4">Array .map() — Price Calculator</a></li>
+    <li><a href="#p5">Registration Form — Show Data on Next Page</a></li>
+    <li><a href="#p6">Login Validation with Static Data</a></li>
+    <li><a href="#p7">For Loop — Multiplication Table</a></li>
+    <li><a href="#p8">Error Handling — Try / Catch</a></li>
+    <li><a href="#p9">Dynamic List — Add &amp; Remove Items</a></li>
+    <li><a href="#p10">Full Mini App — Register → Login → Dashboard</a></li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════════════════════════ PROGRAMS ════════════════════════════════════════ -->
+<div class="programs">
+
+<!-- ───────────────── PROGRAM 1 ───────────────── -->
+<div class="card" id="p1">
+  <div class="card-header">
+    <div class="card-number">1</div>
+    <div>
+      <h2>Form Validation — Name &amp; Email</h2>
+      <div class="topic">Topics: HTML forms · JavaScript validation · DOM · if/else</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      Form validation checks user input <em>before</em> sending data to the server.
+      We read the input value with <code>document.getElementById()</code>,
+      then check conditions with <code>if/else</code> and show or hide error messages.
+    </div>
+
+    <div class="code-label">📄 Source Code</div>
+    <pre><span class="cm">&lt;!-- HTML Structure --&gt;</span>
+&lt;<span class="kw">input</span> type=<span class="str">"text"</span>  id=<span class="str">"name"</span>  placeholder=<span class="str">"Enter your name"</span> /&gt;
+&lt;<span class="kw">input</span> type=<span class="str">"email"</span> id=<span class="str">"email"</span> placeholder=<span class="str">"Enter your email"</span> /&gt;
+&lt;<span class="kw">button</span> onclick=<span class="str">"validate()"</span>&gt;Submit&lt;/<span class="kw">button</span>&gt;
+&lt;<span class="kw">div</span> id=<span class="str">"output"</span>&gt;&lt;/<span class="kw">div</span>&gt;
+
+<span class="cm">&lt;!-- JavaScript Logic --&gt;</span>
+&lt;<span class="kw">script</span>&gt;
+  <span class="kw">function</span> <span class="fn">validate</span>() {
+    <span class="kw">let</span> <span class="var">name</span>  = <span class="fn">document.getElementById</span>(<span class="str">"name"</span>).value.<span class="fn">trim</span>();
+    <span class="kw">let</span> <span class="var">email</span> = <span class="fn">document.getElementById</span>(<span class="str">"email"</span>).value.<span class="fn">trim</span>();
+    <span class="kw">let</span> <span class="var">out</span>   = <span class="fn">document.getElementById</span>(<span class="str">"output"</span>);
+
+    <span class="cm">// Rule 1: name must not be empty</span>
+    <span class="kw">if</span> (<span class="var">name</span> === <span class="str">""</span>) {
+      <span class="var">out</span>.textContent = <span class="str">"❌ Name is required."</span>;
+      <span class="kw">return</span>;
+    }
+
+    <span class="cm">// Rule 2: email must contain "@"</span>
+    <span class="kw">if</span> (!<span class="var">email</span>.<span class="fn">includes</span>(<span class="str">"@"</span>)) {
+      <span class="var">out</span>.textContent = <span class="str">"❌ Enter a valid email."</span>;
+      <span class="kw">return</span>;
+    }
+
+    <span class="var">out</span>.textContent = <span class="str">`✅ Hello, ${</span><span class="var">name</span><span class="str">}! Email ${</span><span class="var">email</span><span class="str">} is valid.`</span>;
+  }
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="demo">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" id="p1name" placeholder="Enter your name" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="p1email" placeholder="Enter your email" />
+      </div>
+      <button onclick="p1validate()">Submit</button>
+      <div class="output-box" id="p1out">Output appears here…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── PROGRAM 2 ───────────────── -->
+<div class="card" id="p2">
+  <div class="card-header">
+    <div class="card-number">2</div>
+    <div>
+      <h2>Events — Button Click Counter</h2>
+      <div class="topic">Topics: onclick event · variables · DOM update</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      An <strong>event</strong> is something that happens in the browser — like a button click.
+      We attach a function to <code>onclick</code> and update a counter variable each time the user clicks.
+      <code>innerHTML</code> lets us change the text shown on the page.
+    </div>
+
+    <div class="code-label">📄 Source Code</div>
+    <pre>&lt;<span class="kw">p</span>&gt;Clicks: &lt;<span class="kw">span</span> id=<span class="str">"count"</span>&gt;<span class="nm">0</span>&lt;/<span class="kw">span</span>&gt;&lt;/<span class="kw">p</span>&gt;
+&lt;<span class="kw">button</span> onclick=<span class="str">"addClick()"</span>&gt;Click Me!&lt;/<span class="kw">button</span>&gt;
+&lt;<span class="kw">button</span> onclick=<span class="str">"reset()"</span>&gt;Reset&lt;/<span class="kw">button</span>&gt;
+
+&lt;<span class="kw">script</span>&gt;
+  <span class="kw">let</span> <span class="var">counter</span> = <span class="nm">0</span>;          <span class="cm">// stores the count</span>
+
+  <span class="kw">function</span> <span class="fn">addClick</span>() {
+    <span class="var">counter</span>++;             <span class="cm">// counter = counter + 1</span>
+    <span class="fn">document.getElementById</span>(<span class="str">"count"</span>).innerHTML = <span class="var">counter</span>;
+  }
+
+  <span class="kw">function</span> <span class="fn">reset</span>() {
+    <span class="var">counter</span> = <span class="nm">0</span>;
+    <span class="fn">document.getElementById</span>(<span class="str">"count"</span>).innerHTML = <span class="var">counter</span>;
+  }
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="demo">
+      <p style="font-size:1.2rem;margin-bottom:14px;">Clicks: <span id="p2count" style="font-weight:700;color:#2b6cb0;">0</span></p>
+      <button onclick="p2add()" style="margin-right:8px;">Click Me!</button>
+      <button onclick="p2reset()" class="btn-danger">Reset</button>
+      <div class="output-box" id="p2out">Click the button to start counting…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── PROGRAM 3 ───────────────── -->
+<div class="card" id="p3">
+  <div class="card-header">
+    <div class="card-number">3</div>
+    <div>
+      <h2>Arrays &amp; Loops — Student Marks List</h2>
+      <div class="topic">Topics: Array · for loop · if/else · grade logic</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      An <strong>array</strong> stores multiple values in one variable: <code>let marks = [85, 92, 60]</code>.
+      A <strong>for loop</strong> repeats code for each item. We combine both to loop through student marks
+      and calculate a grade for each student.
+    </div>
+
+    <div class="code-label">📄 Source Code</div>
+    <pre>&lt;<span class="kw">script</span>&gt;
+  <span class="cm">// Array of student objects</span>
+  <span class="kw">const</span> <span class="var">students</span> = [
+    { name: <span class="str">"Ravi"</span>,   marks: <span class="nm">92</span> },
+    { name: <span class="str">"Priya"</span>,  marks: <span class="nm">74</span> },
+    { name: <span class="str">"Anil"</span>,   marks: <span class="nm">55</span> },
+    { name: <span class="str">"Sneha"</span>,  marks: <span class="nm">88</span> },
+    { name: <span class="str">"Kiran"</span>,  marks: <span class="nm">43</span> },
+  ];
+
+  <span class="kw">function</span> <span class="fn">getGrade</span>(<span class="var">m</span>) {
+    <span class="kw">if</span> (<span class="var">m</span> &gt;= <span class="nm">90</span>) <span class="kw">return</span> <span class="str">"A+"</span>;
+    <span class="kw">if</span> (<span class="var">m</span> &gt;= <span class="nm">75</span>) <span class="kw">return</span> <span class="str">"A"</span>;
+    <span class="kw">if</span> (<span class="var">m</span> &gt;= <span class="nm">60</span>) <span class="kw">return</span> <span class="str">"B"</span>;
+    <span class="kw">if</span> (<span class="var">m</span> &gt;= <span class="nm">45</span>) <span class="kw">return</span> <span class="str">"C"</span>;
+    <span class="kw">return</span> <span class="str">"Fail"</span>;
+  }
+
+  <span class="kw">function</span> <span class="fn">showMarks</span>() {
+    <span class="kw">let</span> <span class="var">html</span> = <span class="str">"&lt;table&gt;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Marks&lt;/th&gt;&lt;th&gt;Grade&lt;/th&gt;&lt;/tr&gt;"</span>;
+
+    <span class="cm">// for loop iterates over each student</span>
+    <span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> = <span class="nm">0</span>; <span class="var">i</span> &lt; <span class="var">students</span>.length; <span class="var">i</span>++) {
+      <span class="kw">let</span> <span class="var">s</span> = <span class="var">students</span>[<span class="var">i</span>];
+      <span class="kw">let</span> <span class="var">g</span> = <span class="fn">getGrade</span>(<span class="var">s</span>.marks);
+      <span class="var">html</span> += <span class="str">`&lt;tr&gt;&lt;td&gt;${</span><span class="var">s</span><span class="str">.name}&lt;/td&gt;
+               &lt;td&gt;${</span><span class="var">s</span><span class="str">.marks}&lt;/td&gt;
+               &lt;td&gt;${</span><span class="var">g</span><span class="str">}&lt;/td&gt;&lt;/tr&gt;`</span>;
+    }
+    <span class="var">html</span> += <span class="str">"&lt;/table&gt;"</span>;
+    <span class="fn">document.getElementById</span>(<span class="str">"marksOut"</span>).innerHTML = <span class="var">html</span>;
+  }
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="demo">
+      <button onclick="p3show()" class="btn-success">Show Student Marks</button>
+      <div id="p3out" style="margin-top:12px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── PROGRAM 4 ───────────────── -->
+<div class="card" id="p4">
+  <div class="card-header">
+    <div class="card-number">4</div>
+    <div>
+      <h2>Array .map() — Price Calculator with GST</h2>
+      <div class="topic">Topics: Array.map() · arrow functions · template literals</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      <code>Array.map()</code> creates a <em>new</em> array by transforming each item.
+      It does NOT change the original array.
+      Syntax: <code>newArray = oldArray.map(item =&gt; item * 2)</code>.
+      Here we calculate prices after adding 18% GST to each product.
+    </div>
+
+    <div class="code-label">📄 Source Code</div>
+    <pre>&lt;<span class="kw">script</span>&gt;
+  <span class="kw">const</span> <span class="var">products</span> = [
+    { name: <span class="str">"Laptop"</span>,  price: <span class="nm">50000</span> },
+    { name: <span class="str">"Phone"</span>,   price: <span class="nm">20000</span> },
+    { name: <span class="str">"Tablet"</span>,  price: <span class="nm">15000</span> },
+    { name: <span class="str">"Watch"</span>,   price: <span class="nm">8000</span>  },
+  ];
+
+  <span class="cm">// .map() returns a NEW array with GST added</span>
+  <span class="kw">const</span> <span class="var">withGST</span> = <span class="var">products</span>.<span class="fn">map</span>(<span class="var">item</span> =&gt; ({
+    ...item,                                  <span class="cm">// copy original fields</span>
+    gstPrice: <span class="fn">Math.round</span>(<span class="var">item</span>.price * <span class="nm">1.18</span>)  <span class="cm">// add 18% GST</span>
+  }));
+
+  <span class="kw">function</span> <span class="fn">showPrices</span>() {
+    <span class="kw">let</span> <span class="var">html</span> = <span class="str">`&lt;table&gt;
+      &lt;tr&gt;&lt;th&gt;Product&lt;/th&gt;&lt;th&gt;Base Price&lt;/th&gt;
+          &lt;th&gt;+ 18% GST&lt;/th&gt;&lt;/tr&gt;`</span>;
+
+    <span class="var">withGST</span>.<span class="fn">forEach</span>(<span class="var">p</span> =&gt; {
+      <span class="var">html</span> += <span class="str">`&lt;tr&gt;
+        &lt;td&gt;${</span><span class="var">p</span><span class="str">.name}&lt;/td&gt;
+        &lt;td&gt;₹${</span><span class="var">p</span><span class="str">.price.toLocaleString()}&lt;/td&gt;
+        &lt;td&gt;₹${</span><span class="var">p</span><span class="str">.gstPrice.toLocaleString()}&lt;/td&gt;
+      &lt;/tr&gt;`</span>;
+    });
+    <span class="var">html</span> += <span class="str">"&lt;/table&gt;"</span>;
+    <span class="fn">document.getElementById</span>(<span class="str">"priceOut"</span>).innerHTML = <span class="var">html</span>;
+  }
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="demo">
+      <button onclick="p4show()" class="btn-success">Calculate GST Prices</button>
+      <div id="p4out" style="margin-top:12px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── PROGRAM 5 ───────────────── -->
+<div class="card" id="p5">
+  <div class="card-header">
+    <div class="card-number">5</div>
+    <div>
+      <h2>Registration Form — Show Data on Next "Page"</h2>
+      <div class="topic">Topics: Form input · localStorage · section switching · validation</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      We use two <code>&lt;div&gt;</code> sections to simulate "pages". After the user fills the form
+      and clicks Submit, we hide Section 1 and show Section 2 with all entered data.
+      <code>localStorage</code> saves data in the browser so it persists.
+    </div>
+
+    <div class="code-label">📄 Source Code</div>
+    <pre><span class="cm">&lt;!-- Page 1: Form --&gt;</span>
+&lt;<span class="kw">div</span> id=<span class="str">"regForm"</span>&gt;
+  &lt;<span class="kw">input</span> id=<span class="str">"rName"</span>  placeholder=<span class="str">"Full Name"</span>  /&gt;
+  &lt;<span class="kw">input</span> id=<span class="str">"rEmail"</span> placeholder=<span class="str">"Email"</span>      /&gt;
+  &lt;<span class="kw">input</span> id=<span class="str">"rPhone"</span> placeholder=<span class="str">"Phone"</span>      /&gt;
+  &lt;<span class="kw">input</span> id=<span class="str">"rCity"</span>  placeholder=<span class="str">"City"</span>       /&gt;
+  &lt;<span class="kw">button</span> onclick=<span class="str">"submitReg()"</span>&gt;Register&lt;/<span class="kw">button</span>&gt;
+&lt;/<span class="kw">div</span>&gt;
+
+<span class="cm">&lt;!-- Page 2: Summary (hidden initially) --&gt;</span>
+&lt;<span class="kw">div</span> id=<span class="str">"regSummary"</span> style=<span class="str">"display:none"</span>&gt;
+  &lt;<span class="kw">h3</span>&gt;Registration Successful!&lt;/<span class="kw">h3</span>&gt;
+  &lt;<span class="kw">div</span> id=<span class="str">"summaryData"</span>&gt;&lt;/<span class="kw">div</span>&gt;
+&lt;/<span class="kw">div</span>&gt;
+
+&lt;<span class="kw">script</span>&gt;
+  <span class="kw">function</span> <span class="fn">submitReg</span>() {
+    <span class="kw">let</span> <span class="var">data</span> = {
+      name:  <span class="fn">document.getElementById</span>(<span class="str">"rName"</span>).value.<span class="fn">trim</span>(),
+      email: <span class="fn">document.getElementById</span>(<span class="str">"rEmail"</span>).value.<span class="fn">trim</span>(),
+      phone: <span class="fn">document.getElementById</span>(<span class="str">"rPhone"</span>).value.<span class="fn">trim</span>(),
+      city:  <span class="fn">document.getElementById</span>(<span class="str">"rCity"</span>).value.<span class="fn">trim</span>(),
+    };
+
+    <span class="cm">// Validate required fields</span>
+    <span class="kw">if</span> (!<span class="var">data</span>.name || !<span class="var">data</span>.email) {
+      <span class="fn">alert</span>(<span class="str">"Name and Email are required!"</span>);
+      <span class="kw">return</span>;
+    }
+
+    <span class="cm">// Save to localStorage</span>
+    <span class="fn">localStorage.setItem</span>(<span class="str">"regData"</span>, <span class="fn">JSON.stringify</span>(<span class="var">data</span>));
+
+    <span class="cm">// Show summary page</span>
+    <span class="fn">document.getElementById</span>(<span class="str">"regForm"</span>).style.display    = <span class="str">"none"</span>;
+    <span class="fn">document.getElementById</span>(<span class="str">"regSummary"</span>).style.display = <span class="str">"block"</span>;
+    <span class="fn">document.getElementById</span>(<span class="str">"summaryData"</span>).innerHTML =
+      <span class="str">`&lt;p&gt;👤 ${</span><span class="var">data</span><span class="str">.name}&lt;/p&gt;
+       &lt;p&gt;📧 ${</span><span class="var">data</span><span class="str">.email}&lt;/p&gt;
+       &lt;p&gt;📞 ${</span><span class="var">data</span><span class="str">.phone}&lt;/p&gt;
+       &lt;p&gt;🏙️ ${</span><span class="var">data</span><span class="str">.city}&lt;/p&gt;`</span>;
+  }
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="demo">
+      <div id="p5form">
+        <div class="form-group"><label>Full Name *</label><input type="text" id="p5name" placeholder="Enter full name"/></div>
+        <div class="form-group"><label>Email *</label><input type="email" id="p5email" placeholder="Enter email"/></div>
+        <div class="form-group"><label>Phone</label><input type="text" id="p5phone" placeholder="Enter phone"/></div>
+        <div class="form-group"><label>City</label><input type="text" id="p5city" placeholder="Enter city"/></div>
+        <button onclick="p5submit()">Register →</button>
+        <div class="output-box error" id="p5err" style="display:none;margin-top:10px;"></div>
+      </div>
+      <div id="p5summary" style="display:none;">
+        <div style="background:#f0fff4;border:2px solid #9ae6b4;border-radius:10px;padding:20px;">
+          <h3 style="color:#276749;margin-bottom:12px;">✅ Registration Successful!</h3>
+          <div id="p5data"></div>
+          <button onclick="p5back()" style="margin-top:14px;background:#718096;">← Go Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── PROGRAM 6 ───────────────── -->
+<div class="card" id="p6">
+  <div class="card-header">
+    <div class="card-number">6</div>
+    <div>
+      <h2>Login Validation with Static Data</h2>
+      <div class="topic">Topics: Static credentials · string comparison · session state</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      In real apps, login is checked against a server. For learning we use
+      <strong>static (hardcoded) credentials</strong> stored in a JavaScript object.
+      The user's input is compared with <code>===</code> (strict equality).
+      After login, we show a welcome panel and hide the login form.
+    </div>
+
+    <div class="highlight">
+      💡 <strong>Demo Credentials:</strong> &nbsp;
+      Email: <code>admin@test.com</code> &nbsp; Password: <code>pass123</code>
+    </div>
+
+    <div class="code-label">📄 Source Code</div>
+    <pre>&lt;<span class="kw">script</span>&gt;
+  <span class="cm">// Static user data (in real apps this is on the server)</span>
+  <span class="kw">const</span> <span class="var">USERS</span> = [
+    { email: <span class="str">"admin@test.com"</span>,   password: <span class="str">"pass123"</span>, name: <span class="str">"Admin"</span>  },
+    { email: <span class="str">"student@test.com"</span>, password: <span class="str">"abc456"</span>,  name: <span class="str">"Ravi"</span>   },
+  ];
+
+  <span class="kw">function</span> <span class="fn">doLogin</span>() {
+    <span class="kw">let</span> <span class="var">email</span> = <span class="fn">document.getElementById</span>(<span class="str">"lEmail"</span>).value.<span class="fn">trim</span>();
+    <span class="kw">let</span> <span class="var">pass</span>  = <span class="fn">document.getElementById</span>(<span class="str">"lPass"</span>).value;
+
+    <span class="cm">// Find a matching user</span>
+    <span class="kw">let</span> <span class="var">user</span> = <span class="var">USERS</span>.<span class="fn">find</span>(
+      <span class="var">u</span> =&gt; <span class="var">u</span>.email === <span class="var">email</span> &amp;&amp; <span class="var">u</span>.password === <span class="var">pass</span>
+    );
+
+    <span class="kw">if</span> (<span class="var">user</span>) {
+      <span class="cm">// Login success</span>
+      <span class="fn">document.getElementById</span>(<span class="str">"loginForm"</span>).style.display = <span class="str">"none"</span>;
+      <span class="fn">document.getElementById</span>(<span class="str">"loginMsg"</span>).innerHTML =
+        <span class="str">`✅ Welcome, &lt;strong&gt;${</span><span class="var">user</span><span class="str">.name}&lt;/strong&gt;! You are logged in.`</span>;
+    } <span class="kw">else</span> {
+      <span class="fn">document.getElementById</span>(<span class="str">"loginErr"</span>).textContent =
+        <span class="str">"❌ Invalid email or password."</span>;
+    }
+  }
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="demo">
+      <div id="p6form">
+        <div class="form-group"><label>Email</label><input type="email" id="p6email" placeholder="admin@test.com"/></div>
+        <div class="form-group"><label>Password</label><input type="password" id="p6pass" placeholder="pass123"/></div>
+        <div class="output-box error" id="p6err" style="min-height:0;padding:8px 12px;display:none;margin-bottom:10px;"></div>
+        <button onclick="p6login()">Login</button>
+        <p style="font-size:.82rem;color:#718096;margin-top:8px;">Try: admin@test.com / pass123 &nbsp;|&nbsp; student@test.com / abc456</p>
+      </div>
+      <div id="p6success" style="display:none;">
+        <div style="background:#f0fff4;border:2px solid #9ae6b4;border-radius:10px;padding:20px;">
+          <div id="p6msg" style="font-size:1.05rem;"></div>
+          <button onclick="p6logout()" style="margin-top:14px;background:#718096;">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── PROGRAM 7 ───────────────── -->
+<div class="card" id="p7">
+  <div class="card-header">
+    <div class="card-number">7</div>
+    <div>
+      <h2>For Loop — Multiplication Table</h2>
+      <div class="topic">Topics: for loop · user input · string building · innerHTML</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      A <code>for</code> loop runs a block of code a specific number of times.
+      Syntax: <code>for (let i = 1; i &lt;= 10; i++)</code> — start at 1, run while i ≤ 10, increment by 1 each time.
+      We use it to generate the multiplication table for any number the user enters.
+    </div>
+
+    <div class="code-label">📄 Source Code</div>
+    <pre>&lt;<span class="kw">script</span>&gt;
+  <span class="kw">function</span> <span class="fn">showTable</span>() {
+    <span class="kw">let</span> <span class="var">n</span>   = <span class="fn">parseInt</span>(<span class="fn">document.getElementById</span>(<span class="str">"tableNum"</span>).value);
+    <span class="kw">let</span> <span class="var">out</span> = <span class="fn">document.getElementById</span>(<span class="str">"tableOut"</span>);
+
+    <span class="kw">if</span> (<span class="fn">isNaN</span>(<span class="var">n</span>) || <span class="var">n</span> &lt; <span class="nm">1</span>) {
+      <span class="var">out</span>.textContent = <span class="str">"Please enter a valid number."</span>;
+      <span class="kw">return</span>;
+    }
+
+    <span class="kw">let</span> <span class="var">result</span> = <span class="str">""</span>;
+
+    <span class="cm">// for loop: runs 10 times (i = 1 to 10)</span>
+    <span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> = <span class="nm">1</span>; <span class="var">i</span> &lt;= <span class="nm">10</span>; <span class="var">i</span>++) {
+      <span class="var">result</span> += <span class="str">`${</span><span class="var">n</span><span class="str">} × ${</span><span class="var">i</span><span class="str">} = ${</span><span class="var">n</span> * <span class="var">i</span><span class="str">}\n`</span>;
+    }
+
+    <span class="var">out</span>.textContent = <span class="var">result</span>;
+  }
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="demo">
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+        <div class="form-group" style="margin:0;">
+          <label>Enter a number</label>
+          <input type="number" id="p7num" value="5" style="width:120px;margin:0;"/>
+        </div>
+        <button onclick="p7show()">Show Table</button>
+      </div>
+      <div class="output-box" id="p7out" style="margin-top:12px;font-size:.88rem;line-height:1.8;">Output appears here…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── PROGRAM 8 ───────────────── -->
+<div class="card" id="p8">
+  <div class="card-header">
+    <div class="card-number">8</div>
+    <div>
+      <h2>Error Handling — try / catch / finally</h2>
+      <div class="topic">Topics: try · catch · finally · throw · typeof</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      When code might fail (e.g., dividing by zero, invalid JSON), we wrap it in
+      <code>try { }</code>. If an error occurs, JavaScript jumps to <code>catch (e) { }</code>
+      where <code>e.message</code> tells us what went wrong.
+      <code>finally { }</code> always runs whether there was an error or not.
+    </div>
+
+    <div class="code-label">📄 Source Code</div>
+    <pre>&lt;<span class="kw">script</span>&gt;
+  <span class="kw">function</span> <span class="fn">divideNumbers</span>() {
+    <span class="kw">let</span> <span class="var">a</span> = <span class="fn">parseFloat</span>(<span class="fn">document.getElementById</span>(<span class="str">"numA"</span>).value);
+    <span class="kw">let</span> <span class="var">b</span> = <span class="fn">parseFloat</span>(<span class="fn">document.getElementById</span>(<span class="str">"numB"</span>).value);
+    <span class="kw">let</span> <span class="var">out</span> = <span class="fn">document.getElementById</span>(<span class="str">"divOut"</span>);
+
+    <span class="kw">try</span> {
+      <span class="cm">// Manually throw an error for division by zero</span>
+      <span class="kw">if</span> (<span class="fn">isNaN</span>(<span class="var">a</span>) || <span class="fn">isNaN</span>(<span class="var">b</span>)) {
+        <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="str">"Both inputs must be valid numbers."</span>);
+      }
+      <span class="kw">if</span> (<span class="var">b</span> === <span class="nm">0</span>) {
+        <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="str">"Cannot divide by zero!"</span>);
+      }
+
+      <span class="kw">let</span> <span class="var">result</span> = <span class="var">a</span> / <span class="var">b</span>;
+      <span class="var">out</span>.textContent = <span class="str">`✅ ${</span><span class="var">a</span><span class="str">} ÷ ${</span><span class="var">b</span><span class="str">} = ${</span><span class="var">result</span><span class="str">}`</span>;
+      <span class="var">out</span>.className = <span class="str">"output-box"</span>;
+
+    } <span class="kw">catch</span> (<span class="var">error</span>) {
+      <span class="cm">// This runs when an error is thrown</span>
+      <span class="var">out</span>.textContent = <span class="str">`❌ Error: ${</span><span class="var">error</span><span class="str">.message}`</span>;
+      <span class="var">out</span>.className = <span class="str">"output-box error"</span>;
+
+    } <span class="kw">finally</span> {
+      <span class="cm">// This ALWAYS runs</span>
+      <span class="fn">console.log</span>(<span class="str">"Division attempted."</span>);
+    }
+  }
+
+  <span class="cm">// JSON Parse error example</span>
+  <span class="kw">function</span> <span class="fn">parseJSON</span>() {
+    <span class="kw">let</span> <span class="var">input</span> = <span class="fn">document.getElementById</span>(<span class="str">"jsonInput"</span>).value;
+    <span class="kw">let</span> <span class="var">out</span>   = <span class="fn">document.getElementById</span>(<span class="str">"jsonOut"</span>);
+    <span class="kw">try</span> {
+      <span class="kw">let</span> <span class="var">data</span> = <span class="fn">JSON.parse</span>(<span class="var">input</span>);
+      <span class="var">out</span>.textContent = <span class="str">"✅ Valid JSON: "</span> + <span class="fn">JSON.stringify</span>(<span class="var">data</span>, <span class="kw">null</span>, <span class="nm">2</span>);
+      <span class="var">out</span>.className = <span class="str">"output-box"</span>;
+    } <span class="kw">catch</span> (<span class="var">e</span>) {
+      <span class="var">out</span>.textContent = <span class="str">"❌ Invalid JSON: "</span> + <span class="var">e</span>.message;
+      <span class="var">out</span>.className = <span class="str">"output-box error"</span>;
+    }
+  }
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo — Division</div>
+    <div class="demo">
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+        <div class="form-group" style="margin:0;"><label>Number A</label><input type="number" id="p8a" value="10" style="width:100px;margin:0;"/></div>
+        <span style="font-size:1.4rem;margin-bottom:9px;">÷</span>
+        <div class="form-group" style="margin:0;"><label>Number B</label><input type="number" id="p8b" value="0" style="width:100px;margin:0;"/></div>
+        <button onclick="p8divide()">Divide</button>
+      </div>
+      <div class="output-box error" id="p8out" style="margin-top:10px;">Try dividing by 0 to see error handling!</div>
+    </div>
+    <div class="demo-label" style="margin-top:16px;">▶ Live Demo — JSON Parser</div>
+    <div class="demo">
+      <div class="form-group"><label>Enter JSON string</label>
+        <textarea id="p8json" rows="3" style="font-family:monospace;font-size:.88rem;">{"name":"Ravi","age":25}</textarea>
+      </div>
+      <button onclick="p8json()">Parse JSON</button>
+      <div class="output-box" id="p8jsonout" style="margin-top:10px;">Output appears here…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── PROGRAM 9 ───────────────── -->
+<div class="card" id="p9">
+  <div class="card-header">
+    <div class="card-number">9</div>
+    <div>
+      <h2>Dynamic List — Add &amp; Remove Items</h2>
+      <div class="topic">Topics: Array push/splice · DOM createElement · event listeners · filter</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      We maintain a JavaScript array as the <em>single source of truth</em> for our list,
+      then <strong>re-render</strong> the DOM every time the array changes.
+      <code>array.push(item)</code> adds to the end.
+      <code>array.splice(index, 1)</code> removes one item at a given position.
+    </div>
+
+    <div class="code-label">📄 Source Code</div>
+    <pre>&lt;<span class="kw">script</span>&gt;
+  <span class="kw">let</span> <span class="var">items</span> = [<span class="str">"Buy milk"</span>, <span class="str">"Read a book"</span>, <span class="str">"Walk 30 min"</span>];
+
+  <span class="kw">function</span> <span class="fn">renderList</span>() {
+    <span class="kw">let</span> <span class="var">ul</span> = <span class="fn">document.getElementById</span>(<span class="str">"myList"</span>);
+    <span class="var">ul</span>.innerHTML = <span class="str">""</span>;          <span class="cm">// clear old list</span>
+
+    <span class="kw">if</span> (<span class="var">items</span>.length === <span class="nm">0</span>) {
+      <span class="var">ul</span>.innerHTML = <span class="str">"&lt;li style='color:#718096'&gt;No items yet.&lt;/li&gt;"</span>;
+      <span class="kw">return</span>;
+    }
+
+    <span class="cm">// forEach creates one &lt;li&gt; per item</span>
+    <span class="var">items</span>.<span class="fn">forEach</span>((<span class="var">item</span>, <span class="var">index</span>) =&gt; {
+      <span class="kw">let</span> <span class="var">li</span> = <span class="fn">document.createElement</span>(<span class="str">"li"</span>);
+      <span class="var">li</span>.innerHTML = <span class="str">`${</span><span class="var">item</span><span class="str">}
+        &lt;button onclick="removeItem(${</span><span class="var">index</span><span class="str">})"&gt;✕&lt;/button&gt;`</span>;
+      <span class="var">ul</span>.<span class="fn">appendChild</span>(<span class="var">li</span>);
+    });
+  }
+
+  <span class="kw">function</span> <span class="fn">addItem</span>() {
+    <span class="kw">let</span> <span class="var">val</span> = <span class="fn">document.getElementById</span>(<span class="str">"newItem"</span>).value.<span class="fn">trim</span>();
+    <span class="kw">if</span> (!<span class="var">val</span>) { <span class="fn">alert</span>(<span class="str">"Enter something first!"</span>); <span class="kw">return</span>; }
+    <span class="var">items</span>.<span class="fn">push</span>(<span class="var">val</span>);                      <span class="cm">// add to array</span>
+    <span class="fn">document.getElementById</span>(<span class="str">"newItem"</span>).value = <span class="str">""</span>;
+    <span class="fn">renderList</span>();                            <span class="cm">// refresh DOM</span>
+  }
+
+  <span class="kw">function</span> <span class="fn">removeItem</span>(<span class="var">index</span>) {
+    <span class="var">items</span>.<span class="fn">splice</span>(<span class="var">index</span>, <span class="nm">1</span>);               <span class="cm">// remove 1 item at index</span>
+    <span class="fn">renderList</span>();
+  }
+
+  <span class="fn">renderList</span>();   <span class="cm">// run on page load</span>
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo</div>
+    <div class="demo">
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <input type="text" id="p9input" placeholder="Add a new item…" style="margin:0;flex:1;"/>
+        <button onclick="p9add()">Add</button>
+      </div>
+      <ul id="p9list" style="padding-left:0;list-style:none;"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── PROGRAM 10 ───────────────── -->
+<div class="card" id="p10">
+  <div class="card-header">
+    <div class="card-number" style="background:rgba(255,255,255,.3);">10</div>
+    <div>
+      <h2>Full Mini App — Register → Login → Dashboard</h2>
+      <div class="topic">Topics: Multi-step flow · localStorage · form validation · session management · all concepts combined</div>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="concept">
+      <strong>📘 Concept</strong>
+      This is the capstone program combining everything: registration form with full validation,
+      saving user data to <code>localStorage</code>, login with credential check, a welcome dashboard
+      showing registered info, and a logout button to reset the session.
+      Three "pages" are managed by toggling <code>display:none / block</code>.
+    </div>
+
+    <div class="code-label">📄 Source Code (key functions)</div>
+    <pre>&lt;<span class="kw">script</span>&gt;
+  <span class="cm">// ── REGISTER ──────────────────────────────</span>
+  <span class="kw">function</span> <span class="fn">register</span>() {
+    <span class="kw">let</span> <span class="var">name</span>  = <span class="fn">getVal</span>(<span class="str">"fName"</span>);
+    <span class="kw">let</span> <span class="var">email</span> = <span class="fn">getVal</span>(<span class="str">"fEmail"</span>);
+    <span class="kw">let</span> <span class="var">pass</span>  = <span class="fn">getVal</span>(<span class="str">"fPass"</span>);
+    <span class="kw">let</span> <span class="var">conf</span>  = <span class="fn">getVal</span>(<span class="str">"fConf"</span>);
+
+    <span class="cm">// Validation chain</span>
+    <span class="kw">if</span> (!<span class="var">name</span>)               <span class="kw">return</span> <span class="fn">showErr</span>(<span class="str">"Name is required"</span>);
+    <span class="kw">if</span> (!<span class="var">email</span>.<span class="fn">includes</span>(<span class="str">"@"</span>)) <span class="kw">return</span> <span class="fn">showErr</span>(<span class="str">"Invalid email"</span>);
+    <span class="kw">if</span> (<span class="var">pass</span>.length &lt; <span class="nm">6</span>)      <span class="kw">return</span> <span class="fn">showErr</span>(<span class="str">"Password min 6 chars"</span>);
+    <span class="kw">if</span> (<span class="var">pass</span> !== <span class="var">conf</span>)         <span class="kw">return</span> <span class="fn">showErr</span>(<span class="str">"Passwords do not match"</span>);
+
+    <span class="cm">// Save user to localStorage</span>
+    <span class="fn">localStorage.setItem</span>(<span class="str">"appUser"</span>,
+      <span class="fn">JSON.stringify</span>({ name, email, pass }));
+
+    <span class="fn">navigate</span>(<span class="str">"loginPage"</span>);   <span class="cm">// go to login</span>
+  }
+
+  <span class="cm">// ── LOGIN ─────────────────────────────────</span>
+  <span class="kw">function</span> <span class="fn">login</span>() {
+    <span class="kw">let</span> <span class="var">saved</span> = <span class="fn">JSON.parse</span>(<span class="fn">localStorage.getItem</span>(<span class="str">"appUser"</span>));
+    <span class="kw">if</span> (!<span class="var">saved</span>) <span class="kw">return</span> <span class="fn">showLoginErr</span>(<span class="str">"Please register first"</span>);
+
+    <span class="kw">let</span> <span class="var">email</span> = <span class="fn">getVal</span>(<span class="str">"lEmail"</span>);
+    <span class="kw">let</span> <span class="var">pass</span>  = <span class="fn">getVal</span>(<span class="str">"lPass"</span>);
+
+    <span class="kw">if</span> (<span class="var">email</span> === <span class="var">saved</span>.email &amp;&amp; <span class="var">pass</span> === <span class="var">saved</span>.pass) {
+      <span class="fn">showDashboard</span>(<span class="var">saved</span>);
+    } <span class="kw">else</span> {
+      <span class="fn">showLoginErr</span>(<span class="str">"Incorrect email or password"</span>);
+    }
+  }
+
+  <span class="cm">// ── NAVIGATE between pages ─────────────────</span>
+  <span class="kw">function</span> <span class="fn">navigate</span>(<span class="var">pageId</span>) {
+    [<span class="str">"regPage"</span>, <span class="str">"loginPage"</span>, <span class="str">"dashboard"</span>].<span class="fn">forEach</span>(<span class="var">id</span> =&gt; {
+      <span class="fn">document.getElementById</span>(<span class="var">id</span>).style.display =
+        <span class="var">id</span> === <span class="var">pageId</span> ? <span class="str">"block"</span> : <span class="str">"none"</span>;
+    });
+  }
+&lt;/<span class="kw">script</span>&gt;</pre>
+
+    <div class="demo-label">▶ Live Demo — Full App</div>
+    <div class="demo" style="padding:0;overflow:hidden;">
+      <!-- NAV BAR -->
+      <div style="background:#2b6cb0;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="color:#fff;font-weight:700;font-size:.95rem;">🚀 MyApp</span>
+        <span id="p10nav" style="color:rgba(255,255,255,.75);font-size:.82rem;"></span>
+      </div>
+      <div style="padding:20px;">
+
+      <!-- REGISTER PAGE -->
+      <div id="p10reg">
+        <h3 style="margin-bottom:16px;color:#2b6cb0;">Create Account</h3>
+        <div class="form-group"><label>Full Name *</label><input type="text" id="f10name" placeholder="Enter full name"/></div>
+        <div class="form-group"><label>Email *</label><input type="email" id="f10email" placeholder="Enter email"/></div>
+        <div class="form-group"><label>Password * (min 6 chars)</label><input type="password" id="f10pass" placeholder="Create password"/></div>
+        <div class="form-group"><label>Confirm Password *</label><input type="password" id="f10conf" placeholder="Repeat password"/></div>
+        <div class="output-box error" id="p10rerr" style="display:none;margin-bottom:10px;"></div>
+        <button onclick="p10register()" style="width:100%;padding:12px;">Register →</button>
+        <p style="text-align:center;margin-top:10px;font-size:.88rem;color:#718096;">Already have an account? <a href="#" onclick="p10nav('login');return false;" style="color:#2b6cb0;">Login</a></p>
+      </div>
+
+      <!-- LOGIN PAGE -->
+      <div id="p10login" style="display:none;">
+        <h3 style="margin-bottom:16px;color:#2b6cb0;">Welcome Back</h3>
+        <div id="p10regbanner" style="background:#f0fff4;border:1px solid #9ae6b4;border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:.88rem;color:#276749;display:none;">✅ Registered! Now login with your credentials.</div>
+        <div class="form-group"><label>Email</label><input type="email" id="l10email" placeholder="Enter email"/></div>
+        <div class="form-group"><label>Password</label><input type="password" id="l10pass" placeholder="Enter password"/></div>
+        <div class="output-box error" id="p10lerr" style="display:none;margin-bottom:10px;"></div>
+        <button onclick="p10login()" style="width:100%;padding:12px;">Login →</button>
+        <p style="text-align:center;margin-top:10px;font-size:.88rem;color:#718096;">No account? <a href="#" onclick="p10nav('reg');return false;" style="color:#2b6cb0;">Register</a></p>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div id="p10dash" style="display:none;">
+        <h3 style="color:#276749;margin-bottom:4px;">🎉 Dashboard</h3>
+        <p style="color:#718096;font-size:.88rem;margin-bottom:16px;">You are successfully logged in.</p>
+        <div id="p10dashdata"></div>
+        <button onclick="p10logout()" class="btn-danger" style="margin-top:16px;">Logout</button>
+      </div>
+
+      </div><!-- /padding -->
+    </div>
+  </div>
+</div>
+
+</div><!-- /programs -->
+
+<!-- ═════════════════════════════════════════ FOOTER ══════════════════════════════════════════ -->
+<footer>
+  <p>📚 HTML + JavaScript — 10 Beginner Programs &nbsp;|&nbsp; Prepared for Fresher / Beginner Learners</p>
+  <p style="margin-top:6px;">Topics covered: Forms · Validation · Events · Arrays · .map() · Loops · Registration · Login · Error Handling · DOM Manipulation</p>
+</footer>
+
+<!-- ═══════════════════════════════════ JAVASCRIPT ════════════════════════════════════════════ -->
+<script>
+/* ── PROGRAM 1: Form Validation ── */
+function p1validate() {
+  let name  = document.getElementById("p1name").value.trim();
+  let email = document.getElementById("p1email").value.trim();
+  let out   = document.getElementById("p1out");
+  if (name === "") { out.textContent = "❌ Name is required."; out.className = "output-box error"; return; }
+  if (!email.includes("@") || !email.includes(".")) { out.textContent = "❌ Please enter a valid email address."; out.className = "output-box error"; return; }
+  out.textContent = "✅ Hello, " + name + "! Email '" + email + "' looks valid. Form submitted successfully!";
+  out.className = "output-box";
+}
+
+/* ── PROGRAM 2: Click Counter ── */
+let p2counter = 0;
+function p2add() {
+  p2counter++;
+  document.getElementById("p2count").textContent = p2counter;
+  let out = document.getElementById("p2out");
+  out.textContent = "You clicked " + p2counter + " time" + (p2counter !== 1 ? "s" : "") + "!";
+  out.className = p2counter >= 10 ? "output-box error" : "output-box";
+  if (p2counter >= 10) out.textContent += " 🔥 That's a lot!";
+}
+function p2reset() {
+  p2counter = 0;
+  document.getElementById("p2count").textContent = "0";
+  document.getElementById("p2out").textContent = "Counter reset to 0.";
+  document.getElementById("p2out").className = "output-box";
+}
+
+/* ── PROGRAM 3: Student Marks ── */
+function p3show() {
+  const students = [
+    { name: "Ravi",   marks: 92 },
+    { name: "Priya",  marks: 74 },
+    { name: "Anil",   marks: 55 },
+    { name: "Sneha",  marks: 88 },
+    { name: "Kiran",  marks: 43 },
+    { name: "Meera",  marks: 67 },
+  ];
+  function getGrade(m) {
+    if (m >= 90) return "A+";
+    if (m >= 75) return "A";
+    if (m >= 60) return "B";
+    if (m >= 45) return "C";
+    return "Fail";
+  }
+  let html = "<table><tr><th>#</th><th>Name</th><th>Marks / 100</th><th>Grade</th></tr>";
+  for (let i = 0; i < students.length; i++) {
+    let s = students[i];
+    let g = getGrade(s.marks);
+    let color = g === "Fail" ? "#c53030" : g === "A+" ? "#276749" : "#2b6cb0";
+    html += `<tr><td>${i+1}</td><td>${s.name}</td><td>${s.marks}</td>
+             <td style="color:${color};font-weight:600;">${g}</td></tr>`;
+  }
+  html += "</table>";
+  document.getElementById("p3out").innerHTML = html;
+}
+
+/* ── PROGRAM 4: .map() GST ── */
+function p4show() {
+  const products = [
+    { name: "Laptop",  price: 50000 },
+    { name: "Phone",   price: 20000 },
+    { name: "Tablet",  price: 15000 },
+    { name: "Watch",   price: 8000  },
+    { name: "Earbuds", price: 3500  },
+  ];
+  const withGST = products.map(item => ({
+    ...item,
+    gst:      Math.round(item.price * 0.18),
+    gstPrice: Math.round(item.price * 1.18)
+  }));
+  let html = "<table><tr><th>Product</th><th>Base Price</th><th>GST (18%)</th><th>Final Price</th></tr>";
+  withGST.forEach(p => {
+    html += `<tr><td>${p.name}</td><td>₹${p.price.toLocaleString()}</td>
+             <td style="color:#c53030;">₹${p.gst.toLocaleString()}</td>
+             <td style="font-weight:600;color:#276749;">₹${p.gstPrice.toLocaleString()}</td></tr>`;
+  });
+  html += "</table><p style='margin-top:8px;font-size:.83rem;color:#718096;'>Calculated using .map() — original array is unchanged.</p>";
+  document.getElementById("p4out").innerHTML = html;
+}
+
+/* ── PROGRAM 5: Registration ── */
+function p5submit() {
+  let name  = document.getElementById("p5name").value.trim();
+  let email = document.getElementById("p5email").value.trim();
+  let phone = document.getElementById("p5phone").value.trim();
+  let city  = document.getElementById("p5city").value.trim();
+  let err   = document.getElementById("p5err");
+
+  if (!name)  { err.textContent = "❌ Name is required."; err.style.display = "block"; return; }
+  if (!email.includes("@")) { err.textContent = "❌ Enter a valid email."; err.style.display = "block"; return; }
+  err.style.display = "none";
+
+  localStorage.setItem("p5reg", JSON.stringify({ name, email, phone, city }));
+  document.getElementById("p5form").style.display = "none";
+  document.getElementById("p5summary").style.display = "block";
+  document.getElementById("p5data").innerHTML = `
+    <table>
+      <tr><th>Field</th><th>Value</th></tr>
+      <tr><td>👤 Name</td><td>${name}</td></tr>
+      <tr><td>📧 Email</td><td>${email}</td></tr>
+      <tr><td>📞 Phone</td><td>${phone || "—"}</td></tr>
+      <tr><td>🏙️ City</td><td>${city || "—"}</td></tr>
+    </table>`;
+}
+function p5back() {
+  document.getElementById("p5form").style.display = "block";
+  document.getElementById("p5summary").style.display = "none";
+}
+
+/* ── PROGRAM 6: Login ── */
+const STATIC_USERS = [
+  { email: "admin@test.com",   password: "pass123", name: "Admin User"  },
+  { email: "student@test.com", password: "abc456",  name: "Ravi Sharma" },
+];
+function p6login() {
+  let email = document.getElementById("p6email").value.trim();
+  let pass  = document.getElementById("p6pass").value;
+  let err   = document.getElementById("p6err");
+  let user  = STATIC_USERS.find(u => u.email === email && u.password === pass);
+  if (user) {
+    document.getElementById("p6form").style.display    = "none";
+    document.getElementById("p6success").style.display = "block";
+    document.getElementById("p6msg").innerHTML = `✅ Welcome, <strong>${user.name}</strong>!<br>
+      <small style="color:#718096;">Logged in as ${user.email}</small>`;
+    err.style.display = "none";
+  } else {
+    err.textContent = "❌ Invalid email or password. Try: admin@test.com / pass123";
+    err.style.display = "block";
+  }
+}
+function p6logout() {
+  document.getElementById("p6form").style.display    = "block";
+  document.getElementById("p6success").style.display = "none";
+  document.getElementById("p6email").value = "";
+  document.getElementById("p6pass").value  = "";
+}
+
+/* ── PROGRAM 7: Multiplication Table ── */
+function p7show() {
+  let n   = parseInt(document.getElementById("p7num").value);
+  let out = document.getElementById("p7out");
+  if (isNaN(n) || n < 1 || n > 99) {
+    out.textContent = "❌ Please enter a number between 1 and 99.";
+    out.className = "output-box error"; return;
+  }
+  let result = `Multiplication Table of ${n}:\n${"─".repeat(22)}\n`;
+  for (let i = 1; i <= 10; i++) {
+    result += `${n} × ${String(i).padStart(2," ")} = ${String(n*i).padStart(4," ")}\n`;
+  }
+  out.textContent = result;
+  out.className = "output-box";
+}
+
+/* ── PROGRAM 8: Error Handling ── */
+function p8divide() {
+  let a   = parseFloat(document.getElementById("p8a").value);
+  let b   = parseFloat(document.getElementById("p8b").value);
+  let out = document.getElementById("p8out");
+  try {
+    if (isNaN(a) || isNaN(b)) throw new Error("Both inputs must be numbers.");
+    if (b === 0) throw new Error("Division by zero is not allowed!");
+    let result = a / b;
+    out.textContent = "✅ " + a + " ÷ " + b + " = " + parseFloat(result.toFixed(6));
+    out.className = "output-box";
+  } catch (e) {
+    out.textContent = "❌ Error caught: " + e.message;
+    out.className = "output-box error";
+  }
+}
+function p8json() {
+  let input = document.getElementById("p8json").value;
+  let out   = document.getElementById("p8jsonout");
+  try {
+    let data = JSON.parse(input);
+    out.textContent = "✅ Valid JSON!\n" + JSON.stringify(data, null, 2);
+    out.className = "output-box";
+  } catch (e) {
+    out.textContent = "❌ JSON Parse Error: " + e.message;
+    out.className = "output-box error";
+  }
+}
+
+/* ── PROGRAM 9: Dynamic List ── */
+let p9items = ["Buy milk", "Read a book", "Walk 30 minutes"];
+function p9render() {
+  let ul = document.getElementById("p9list");
+  ul.innerHTML = "";
+  if (p9items.length === 0) {
+    ul.innerHTML = "<li style='color:#718096;padding:8px 0;'>No items. Add one above!</li>";
+    return;
+  }
+  p9items.forEach((item, idx) => {
+    let li = document.createElement("li");
+    li.style.cssText = "display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #e2e8f0;";
+    li.innerHTML = `<span>📌 ${item}</span>
+      <button onclick="p9remove(${idx})" style="background:#c53030;padding:4px 10px;font-size:.8rem;">✕ Remove</button>`;
+    ul.appendChild(li);
+  });
+}
+function p9add() {
+  let val = document.getElementById("p9input").value.trim();
+  if (!val) { alert("Please enter an item first!"); return; }
+  p9items.push(val);
+  document.getElementById("p9input").value = "";
+  p9render();
+}
+function p9remove(idx) {
+  p9items.splice(idx, 1);
+  p9render();
+}
+p9render();
+
+/* ── PROGRAM 10: Full Mini App ── */
+function p10nav(page) {
+  document.getElementById("p10reg").style.display   = page === "reg"   ? "block" : "none";
+  document.getElementById("p10login").style.display = page === "login" ? "block" : "none";
+  document.getElementById("p10dash").style.display  = page === "dash"  ? "block" : "none";
+  document.getElementById("p10nav").textContent =
+    page === "reg" ? "Step 1 of 3: Register" :
+    page === "login" ? "Step 2 of 3: Login" : "Welcome!";
+}
+function p10getVal(id) { return document.getElementById(id).value.trim(); }
+function p10register() {
+  let name  = p10getVal("f10name");
+  let email = p10getVal("f10email");
+  let pass  = p10getVal("f10pass");
+  let conf  = p10getVal("f10conf");
+  let err   = document.getElementById("p10rerr");
+  let hide  = () => { err.style.display = "none"; };
+  let show  = (msg) => { err.textContent = "❌ " + msg; err.style.display = "block"; };
+  hide();
+  if (!name)               return show("Full name is required.");
+  if (!email.includes("@")) return show("Enter a valid email address.");
+  if (pass.length < 6)     return show("Password must be at least 6 characters.");
+  if (pass !== conf)       return show("Passwords do not match.");
+  localStorage.setItem("p10user", JSON.stringify({ name, email, pass }));
+  p10nav("login");
+  document.getElementById("p10regbanner").style.display = "block";
+}
+function p10login() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem("p10user")); } catch(e) {}
+  let email = p10getVal("l10email");
+  let pass  = p10getVal("l10pass");
+  let err   = document.getElementById("p10lerr");
+  if (!saved) { err.textContent = "❌ No account found. Please register first."; err.style.display = "block"; return; }
+  if (email === saved.email && pass === saved.pass) {
+    err.style.display = "none";
+    p10nav("dash");
+    document.getElementById("p10dashdata").innerHTML = `
+      <div style="background:#f7fafc;border-radius:8px;padding:16px;border:1px solid #e2e8f0;">
+        <p style="font-size:1.1rem;font-weight:600;color:#2b6cb0;margin-bottom:10px;">👋 Hello, ${saved.name}!</p>
+        <table>
+          <tr><th>Field</th><th>Value</th></tr>
+          <tr><td>Name</td><td>${saved.name}</td></tr>
+          <tr><td>Email</td><td>${saved.email}</td></tr>
+          <tr><td>Status</td><td style="color:#276749;font-weight:600;">✅ Active</td></tr>
+        </table>
+      </div>`;
+  } else {
+    err.textContent = "❌ Incorrect email or password.";
+    err.style.display = "block";
+  }
+}
+function p10logout() {
+  localStorage.removeItem("p10user");
+  document.getElementById("l10email").value = "";
+  document.getElementById("l10pass").value  = "";
+  document.getElementById("p10regbanner").style.display = "none";
+  document.getElementById("p10lerr").style.display = "none";
+  p10nav("reg");
+}
+p10nav("reg");
+</script>
+</body>
+</html>

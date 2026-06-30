@@ -1,0 +1,1 @@
+document.getElementById('ki').textContent='hello world!';

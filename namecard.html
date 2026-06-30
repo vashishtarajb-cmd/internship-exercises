@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head><title>Name Card Builder</title>
+        <style>
+            body {font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;max-width: 500px;margin: 40px auto;}
+            input{display: block;width: 100%;padding: 10px;margin-bottom: 10px;font-size: 15px;}
+            button{padding: 10px 20px;background:#2E75B6;color: white;border: none;font-size: 15px;cursor: pointer;}
+            #card{margin-top: 24px;padding: 16px;background: #EEF4FB;border-left: 4px solid #2E75B6;display: none;}
+            #errorName{ color: red;margin-top: 8px;}
+            #errorAge{ color: red;margin-top: 8px;}
+            #errorCity{ color: red;margin-top: 8px;}
+            #errorEmail{color: red;margin-top: 8px;}
+            #errorPhoneno{color: red;margin-top: 8px;}
+            input:focus {
+            border: 2px solid blue;
+            outline: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Name Card Builder</h2>
+        <input type="text" id="inputName" placeholder="Your Full Name">
+        <input type="number" id="inputAge" placeholder="Your Age">
+        <input type="text" id="inputCity" placeholder="Your City">
+        <input type="email" id="inputEmail" placeholder="Your email">
+        <input type="number" id="inputPhoneno" placeholder="Your Phone Number">
+        <button onclick="buildCard()">Build My Card</button>
+        <p id="errorName"></p>
+        <p id="errorAge"></p>
+        <p id="errorCity"></p>
+        <p id="errorEmail"></p>
+        <p id="errorPhoneno"></p>
+        <div id="card">
+            <h3 id="cardName"></h3>
+            <p id="cardAge"></p>
+            <p id="cardCity"></p>
+            <p id="cardEmail"></p>
+            <p id="cardPhoneno"></p>
+            <p id="cardNote"></p>
+        </div>
+        <script>
+            function buildCard(){
+                let name=document.getElementById('inputName').value;
+                let age=parseInt(document.getElementById('inputAge').value);
+                let city=document.getElementById('inputCity').value;
+                let email=document.getElementById('inputEmail').value;
+                let phoneno=document.getElementById('inputPhoneno').value;
+                let errorName=document.getElementById('errorName');
+                let errorAge= document.getElementById('errorAge');
+                let errorCity= document.getElementById('errorCity');
+                let errorEmail= document.getElementById('errorEmail');
+                 let errorPhoneno= document.getElementById('errorPhoneno');
+                errorName.textContent='';
+                errorAge.textContent='';
+                errorCity.textContent='';
+                errorEmail.textContent='';
+                errorPhoneno.textContent='';
+                let isValid=true;
+                if (name === ''){
+                    errorName.textContent='Please Enter Your Name';
+                    if (isValid) {
+                    document.getElementById('inputName').focus();
+                      }
+                    isValid=false;
+                }
+                if (isNaN(age) || age<1 || age>120){
+                    errorAge.textContent='Please enter valid age(1-120)';
+                    if (isValid) {
+                     document.getElementById('inputAge').focus();
+                          }
+                    isValid=false;
+
+                }
+                if(city === ''){
+                    errorCity.textContent='Please enter your city';
+                    if (isValid) {
+                   document.getElementById('inputCity').focus();
+                    }
+                    isValid=false;
+
+                }
+                if (email === ''){
+                    errorEmail.textContent='Please enter your email';
+                    if (isValid) {
+                      document.getElementById('inputEmail').focus();
+                    }
+                    isValid=false;
+                }
+                if(!/^[0-9]{10}$/.test(phoneno)){
+                    errorPhoneno.textContent='Please enter valid 10-digit phone number';
+                    if (isValid) {
+                        document.getElementById('inputPhoneno').focus();
+                      }
+                    isValid=false;
+
+                }
+                
+                if(!isValid){
+                    document.getElementById('card').style.display='none';
+                    return;
+                }
+
+                
+
+
+                let note='';
+                if (age<18){
+                    note='student';
+                }else if(age<60){
+                    note='Working Professional';
+
+                }else{
+                    note='Senior Citizen';
+                }
+
+                document.getElementById('cardName').textContent = 'Name:' + name;
+                document.getElementById('cardCity').textContent = 'City:' + city;
+                document.getElementById('cardAge').textContent='Age:' + age;
+                document.getElementById('cardEmail').textContent = 'Email:' + email;
+                document.getElementById('cardPhoneno').textContent = 'Phone Number:' + phoneno;
+                document.getElementById('cardNote').textContent='Role:' + note;
+                document.getElementById('card').style.display='block';
+            }
+        </script>
+    </body>
+</html>

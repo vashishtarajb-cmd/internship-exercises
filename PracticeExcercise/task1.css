@@ -1,0 +1,160 @@
+:root{
+    --primary:#4f46e5;
+    --dark:#111827;
+    --light:#f8fafc;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+}
+
+/* Navbar */
+
+nav{
+    position:sticky;
+    top:0;
+
+    background:var(--dark);
+
+    color:white;
+
+    padding:15px 30px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:20px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+}
+
+/* Hero Section */
+
+.hero{
+    height:100vh;
+
+    background-image:url("https://picsum.photos/1200/800");
+
+    background-size:cover;
+    background-position:center;
+}
+
+.overlay{
+    height:100%;
+
+    background:rgba(0,0,0,0.5);
+
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.btn{
+    background:var(--primary);
+
+    color:white;
+
+    padding:10px 20px;
+
+    text-decoration:none;
+
+    margin-top:20px;
+}
+
+/* Portfolio */
+
+#portfolio{
+    padding:50px;
+}
+
+.grid{
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:20px;
+}
+
+.card{
+    border:1px solid #ccc;
+
+    padding:10px;
+
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card img{
+    width:100%;
+}
+
+/* Contact */
+
+.contact{
+    padding:50px;
+}
+
+form{
+    max-width:500px;
+    margin:auto;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:10px;
+    margin-bottom:15px;
+}
+
+input:focus,
+textarea:focus{
+    border:10px solid var(--primary);
+    outline:none;
+}
+
+/* Footer */
+
+footer{
+    background:var(--dark);
+
+    color:white;
+
+    text-align:center;
+
+    padding:20px;
+}
+
+footer a{
+    color:white;
+    text-decoration:none;
+    margin:10px;
+}
+
+footer a:hover{
+    background:var(--primary);
+    padding:5px;
+}
+.contact{
+    padding: 50px;
+
+}
