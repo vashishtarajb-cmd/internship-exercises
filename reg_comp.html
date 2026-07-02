@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+        }
+        .controls button {
+      padding: 9px 22px;
+      border: 2px solid #38bdf8;
+      border-radius: 8px;
+      background: transparent;
+      color: #38bdf8;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .controls button.active,
+    .controls button:hover {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+    }
+    #status {
+      text-align: center;
+      padding: 20px;
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+    .spinner {
+      display: inline-block;
+      width: 22px; height: 22px;
+      border: 3px solid #334155;
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Grid View ── */
+    #user-container.grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── List View ── */
+    #user-container.list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* ── Card (Grid) ── */
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 22px 18px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #38bdf8;
+    }
+    .card img {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+      margin-bottom: 12px;
+      object-fit: cover;
+    }
+    .card h3 { font-size: 1rem; color: #f1f5f9; }
+    .card .username { color: #38bdf8; font-size: 0.82rem; margin: 2px 0 8px; }
+    .card .company { font-size: 0.82rem; color: #94a3b8; margin-bottom: 6px; }
+    .card .email { font-size: 0.78rem; color: #64748b; word-break: break-all; }
+    .card .location {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: #475569;
+    }
+
+    /* ── Row (List) ── */
+    .row {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      transition: border-color 0.2s;
+    }
+    .row:hover { border-color: #38bdf8; }
+    .row img {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 2px solid #38bdf8;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+    .row-info { flex: 1; }
+    .row-info h3 { font-size: 0.97rem; color: #f1f5f9; }
+    .row-info .username { font-size: 0.8rem; color: #38bdf8; }
+    .row-info .company { font-size: 0.8rem; color: #94a3b8; }
+    .row-meta { text-align: right; font-size: 0.78rem; color: #64748b; line-height: 1.7; }
+
+    
+    
+    </style>
+    <body>
+        <div id="regPage">
+            <h2>Register</h2>
+            <input type="text" id="rName" placeholder="Enter your name"><br>
+            <input type="email"  id="rEmail" placeholder="Enter your mail"><br>
+            <input type="password" id="rPass" placeholder="Enter your password"><br>
+            <input  type="password" id="rConf" placeholder="Confirm your password"><br>
+            <button onclick="register()">Register</button>
+            <p id="regErr" style="color: red;"></p>
+            
+        </div>
+
+        <div id="loginPage" style="display: none;">
+            <h2>Login</h2>
+            <input id="lEmail" type="email" placeholder="Enter your Email"><br>
+            <input id="lPass"  type="password" placeholder="Enter your password"><br>
+            <button onclick="login()">Login</button>
+            <p id="logErr" style="color: red;"></p>
+
+        </div>
+        <div id="dashboard" style="display: none;">
+            <header>
+    <h1>👤 User Directory</h1>
+    <p>Data fetched live from <code>fake-json-api.mock.beeceptor.com/users</code></p>
+  </header>
+  <div class="controls">
+    <button id="btn-grid" class="active" onclick="switchView('grid')">⊞ Grid</button>
+    <button id="btn-list"               onclick="switchView('list')">☰ List</button>
+  </div>
+  <div id="status">
+    <span class="spinner"></span> Loading users...
+  </div>
+   <div id="user-container" class="grid"></div>
+
+        </div>
+        <script>
+             function getVal(id){
+    return document.getElementById(id).value.trim();
+}
+
+function showErr(msg){
+    document.getElementById("regErr").textContent = msg;
+}
+
+function showLoginErr(msg){
+    document.getElementById("logErr").textContent = msg;
+}
+ const API_URL = 'https://fake-json-api.mock.beeceptor.com/users';
+let currentView = 'grid';
+let usersData = [];
+async function fetchUsers() {
+document.getElementById('status').innerHTML =
+        '<span class="spinner"></span> Loading users...';
+ document.getElementById('user-container').innerHTML = '';
+try {const response = await fetch(API_URL);
+    if (!response.ok) {
+          throw new Error(`HTTP Error — Status: ${response.status}`);
+        }
+        const data = await response.json();
+ usersData= data;
+ document.getElementById('status').style.display = 'none';
+        console.log(usersData);
+        renderUsers(usersData, currentView);
+
+      } catch (error) {
+        document.getElementById('status').innerHTML = `
+          <div class="error-box">
+            ⚠️ <strong>Failed to load users</strong><br/>
+            ${error.message}
+          </div>`;
+      }
+    }
+    function renderUsers(users, view) {
+        const container = document.getElementById('user-container');
+container.className = view;
+container.innerHTML = users.map(user => {
+
+        if (view === 'grid') {
+return `
+            <div class="card">
+              <img src="${user.photo}" alt="${user.name}" />
+              <h3>${user.name}</h3>
+              <div class="username">@${user.username}</div>
+              <div class="company">🏢 ${user.company}</div>
+              <div class="email">✉️ ${user.email}</div>
+              <div class="location">📍 ${user.state}, ${user.country}</div>
+            </div>`;
+
+        } else { return `
+            <div class="row">
+              <img src="${user.photo}" alt="${user.name}" />
+              <div class="row-info">
+                <h3>${user.name}</h3>
+                <div class="username">@${user.username}</div>
+                <div class="company">${user.company}</div>
+              </div>
+              <div class="row-meta">
+                ${user.email}<br/>
+                📞 ${user.phone}<br/>
+                📍 ${user.state}, ${user.country}
+              </div>
+            </div>`;
+        }
+
+      }).join('');
+       }
+        function switchView(view) {
+      currentView = view;
+
+      // Update button highlight
+      document.getElementById('btn-grid').classList.toggle('active', view === 'grid');
+      document.getElementById('btn-list').classList.toggle('active', view === 'list');
+
+      // Only re-render if data already exists
+      if (usersData.length > 0) {
+        renderUsers(usersData, view);
+      }
+      navigate('dashboard');
+    }
+    
+    function register() {
+
+    let name  = getVal("rName");
+    let email = getVal("rEmail");
+    let pass  = getVal("rPass");
+    let conf  = getVal("rConf");
+
+    if (!name)
+        return showErr("Name is required");
+
+    if (!email.includes("@"))
+        return showErr("Invalid Email");
+
+    if (pass.length < 6)
+        return showErr("Password should be at least 6 characters");
+
+    if (pass !== conf)
+        return showErr("Passwords do not match");
+
+    localStorage.setItem(
+        "appUser",
+        JSON.stringify({
+            name,
+            email,
+            pass
+        })
+    );
+
+    showErr("");
+
+    navigate("loginPage");
+}
+
+  // ── LOGIN ─────────────────────────────────
+ function login(){
+
+    let saved = JSON.parse(localStorage.getItem("appUser"));
+
+    if(!saved){
+        return showLoginErr("Please register first");
+    }
+
+    let email = getVal("lEmail");
+    let pass  = getVal("lPass");
+
+    if(email === saved.email && pass === saved.pass){
+
+        showLoginErr("");
+
+        navigate("dashboard");
+
+        fetchUsers();
+
+    }else{
+
+        showLoginErr("Incorrect email or password");
+    }
+}       
+
+  // ── NAVIGATE between pages ─────────────────
+  function navigate(pageId) {
+    ["regPage", "loginPage", "dashboard"].forEach(id => {
+      document.getElementById(id).style.display =
+        id === pageId ? "block" : "none";
+    });
+  }
+
+
+        </script>
+
+    </body>
+</html>

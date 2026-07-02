@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <script>
+            async function fetchUsers() {
+
+    try {
+
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+            throw new Error("HTTP Error");
+        }
+
+        const data = await response.json();
+
+        usersData = data;
+
+        // Exercise 2
+        console.log(usersData);
+
+        renderUsers(usersData, currentView);
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
+}
+        </script>
+    </body>
+</html>

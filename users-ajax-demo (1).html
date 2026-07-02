@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Users - AJAX / Fetch API Demo</title>
+
+  <style>
+    /* ── Reset & Base ── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;        /* dark navy background */
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    header h1 {
+      font-size: 2rem;
+      color: #38bdf8;             /* sky blue */
+      letter-spacing: 1px;
+    }
+    header p {
+      color: #94a3b8;
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+
+    /* ── Toggle Buttons ── */
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .controls button {
+      padding: 9px 22px;
+      border: 2px solid #38bdf8;
+      border-radius: 8px;
+      background: transparent;
+      color: #38bdf8;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .controls button.active,
+    .controls button:hover {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    /* ── Status / Loader ── */
+    #status {
+      text-align: center;
+      padding: 20px;
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+    .spinner {
+      display: inline-block;
+      width: 22px; height: 22px;
+      border: 3px solid #334155;
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Grid View ── */
+    #user-container.grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── List View ── */
+    #user-container.list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* ── Card (Grid) ── */
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 22px 18px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #38bdf8;
+    }
+    .card img {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+      margin-bottom: 12px;
+      object-fit: cover;
+    }
+    .card h3 { font-size: 1rem; color: #f1f5f9; }
+    .card .username { color: #38bdf8; font-size: 0.82rem; margin: 2px 0 8px; }
+    .card .company { font-size: 0.82rem; color: #94a3b8; margin-bottom: 6px; }
+    .card .email { font-size: 0.78rem; color: #64748b; word-break: break-all; }
+    .card .location {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: #475569;
+    }
+
+    /* ── Row (List) ── */
+    .row {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      transition: border-color 0.2s;
+    }
+    .row:hover { border-color: #38bdf8; }
+    .row img {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 2px solid #38bdf8;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+    .row-info { flex: 1; }
+    .row-info h3 { font-size: 0.97rem; color: #f1f5f9; }
+    .row-info .username { font-size: 0.8rem; color: #38bdf8; }
+    .row-info .company { font-size: 0.8rem; color: #94a3b8; }
+    .row-meta { text-align: right; font-size: 0.78rem; color: #64748b; line-height: 1.7; }
+
+    /* ── Error ── */
+    .error-box {
+      background: #450a0a;
+      border: 1px solid #dc2626;
+      border-radius: 10px;
+      padding: 18px 24px;
+      color: #fca5a5;
+      text-align: center;
+      max-width: 500px;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ────────────────────────────────────────────
+       STEP 1 — The HTML skeleton
+       We need:
+         • A heading
+         • Two buttons to toggle Grid / List view
+         • A #status div (shows loader or errors)
+         • A #user-container div (where cards are injected)
+  ──────────────────────────────────────────── -->
+
+  <header>
+    <h1>👤 User Directory</h1>
+    <p>Data fetched live from <code>fake-json-api.mock.beeceptor.com/users</code></p>
+  </header>
+
+  <!-- Toggle buttons — clicking them calls switchView() -->
+  <div class="controls">
+    <input
+id="search"
+type="text"
+placeholder="Search user..."
+>
+    <button id="btn-grid" class="active" onclick="switchView('grid')">⊞ Grid</button>
+    <button id="btn-list"               onclick="switchView('list')">☰ List</button>
+  </div>
+
+  <!-- Loader / error messages go here -->
+  <div id="status">
+    <span class="spinner"></span> Loading users...
+  </div>
+
+  <!-- User cards are injected here by JavaScript -->
+  <div id="user-container" class="grid"></div>
+
+
+  <!-- ================================================================
+       JAVASCRIPT — Full AJAX / Fetch explanation with every line
+  ================================================================ -->
+  <script>
+
+    // ─────────────────────────────────────────────────────────────────
+    // VARIABLE 1 — API_URL
+    //
+    // WHY: We store the endpoint once so it is easy to change later.
+    //      If the URL changes, we edit ONE line, not many.
+    // ─────────────────────────────────────────────────────────────────
+const API_URL =
+"https://fake-json-api.mock.beeceptor.com/companies";
+
+    // ─────────────────────────────────────────────────────────────────
+    // VARIABLE 2 — currentView
+    //
+    // WHY: Tracks whether the user is looking at 'grid' or 'list'.
+    //      We use it to re-render without re-fetching from the network.
+    // ─────────────────────────────────────────────────────────────────
+    let currentView = 'grid';
+
+
+    // ─────────────────────────────────────────────────────────────────
+    // VARIABLE 3 — usersData
+    //
+    // WHY: Cache the API response so switching between grid/list
+    //      does NOT trigger another network request.
+    // ─────────────────────────────────────────────────────────────────
+    let usersData = [];
+
+
+    // =================================================================
+    // FUNCTION: fetchUsers()
+    //
+    // WHAT  — Makes an HTTP GET request to the API and stores data.
+    // WHEN  — Called once when the page loads (see bottom of script).
+    // HOW   — Uses the browser's built-in fetch() API (modern AJAX).
+    // =================================================================
+    async function fetchUsers() {
+
+      // -- Show the loading spinner while waiting for data ----------
+      document.getElementById('status').innerHTML =
+        '<span class="spinner"></span> Loading users...';
+
+      // Clear any old cards from a previous fetch
+      document.getElementById('user-container').innerHTML = '';
+
+
+      // ───────────────────────────────────────────────────────────────
+      // THE CORE AJAX CALL — fetch()
+      //
+      // WHAT IS AJAX?
+      //   AJAX = Asynchronous JavaScript And XML
+      //   It lets the browser talk to a server AFTER the page has
+      //   already loaded — WITHOUT refreshing the whole page.
+      //
+      // WHAT IS fetch()?
+      //   fetch() is the MODERN, built-in browser API for AJAX.
+      //   It replaced the old XMLHttpRequest (XHR) object.
+      //   It returns a Promise — so we use async/await.
+      //
+      // WHY NOT HttpClient?
+      //   HttpClient is an Angular service (TypeScript/Angular).
+      //   In plain HTML + JavaScript there is no HttpClient.
+      //   fetch() is the native equivalent — zero dependencies.
+      //
+      // WHY NOT jQuery $.ajax()?
+      //   $.ajax() is jQuery's wrapper around XHR.
+      //   It still works but requires the jQuery library.
+      //   fetch() works natively in every modern browser — no library.
+      //
+      // COMPARISON TABLE:
+      //   ┌──────────────────┬──────────────────────────────────────┐
+      //   │  Approach        │  When to use                         │
+      //   ├──────────────────┼──────────────────────────────────────┤
+      //   │  fetch()         │ Plain HTML/JS — best modern choice   │
+      //   │  $.ajax()        │ Projects already using jQuery        │
+      //   │  axios           │ Any project — popular npm library    │
+      //   │  HttpClient      │ Angular apps only                    │
+      //   │  XMLHttpRequest  │ Legacy code, avoid in new projects   │
+      //   └──────────────────┴──────────────────────────────────────┘
+      // ───────────────────────────────────────────────────────────────
+
+      try {
+
+        // LINE A — await fetch(API_URL)
+        //
+        // fetch() sends an HTTP GET request to API_URL.
+        // 'await' pauses this function until the server responds.
+        // 'response' is a Response object — it contains headers,
+        // status code (200, 404, 500…) but NOT the body yet.
+        const response = await fetch(API_URL);
+
+
+        // LINE B — Check HTTP status
+        //
+        // response.ok is true when status is 200–299 (success).
+        // If the server returns 404 or 500, we throw an error
+        // instead of trying to parse bad data.
+        if (!response.ok) {
+          throw new Error(`HTTP Error — Status: ${response.status}`);
+        }
+
+
+        // LINE C — response.json()
+        //
+        // The server sent us a JSON string like:
+        //   '[{"id":1,"name":"Unique West",...}, ...]'
+        //
+        // .json() reads that string and converts it into a real
+        // JavaScript array/object we can work with.
+        // It is also async, so we await it.
+        const data = await response.json();
+        console.log(data);
+
+
+        // LINE D — Store and render
+        //
+        // Save the array globally so grid/list toggle works
+        // without hitting the network again.
+        usersData = data;
+
+        // Hide the loading spinner — data is ready
+        document.getElementById('status').style.display = 'none';
+        console.log(usersData);
+
+        // Render cards in whatever view is currently active
+        renderUsers(usersData, currentView);
+
+      } catch (error) {
+
+        // ─────────────────────────────────────────────────────────
+        // ERROR HANDLING
+        //
+        // fetch() itself rejects (throws) ONLY on network failure
+        // (no internet, DNS error, CORS block).
+        // HTTP 4xx / 5xx do NOT auto-throw — that is why we
+        // checked response.ok manually above.
+        // ─────────────────────────────────────────────────────────
+        document.getElementById('status').innerHTML = `
+          <div class="error-box">
+            ⚠️ <strong>Failed to load users</strong><br/>
+            ${error.message}
+          </div>`;
+      }
+    }
+
+
+    // =================================================================
+    // FUNCTION: renderUsers(users, view)
+    //
+    // WHAT  — Takes the JS array and builds HTML cards.
+    // WHY   — Keeps display logic separate from fetch logic.
+    // HOW   — Array.map() creates one HTML string per user,
+    //         then we set innerHTML once (faster than appending
+    //         one element at a time in a loop).
+    // =================================================================
+    function renderUsers(users, view) {
+
+      // Get the container div
+      const container = document.getElementById('user-container');
+
+      // Set CSS class — 'grid' or 'list' — controls the layout
+      container.className = view;
+
+      // Array.map() loops over every user object and returns
+      // an HTML string. We then join('') them into one big string.
+      container.innerHTML = users.map(user => {
+
+        if (view === 'grid') {
+
+          // ── GRID CARD ──────────────────────────────────────────
+          // Template literals (`...`) let us embed JS variables
+          // directly inside HTML using ${variable} syntax.
+          return `
+<div class="card">
+
+<img src="${company.logo}">
+
+<h3>${company.company_name}</h3>
+
+<div>${company.website}</div>
+
+<div>${company.city}</div>
+
+</div>
+`;
+            
+        } else {
+
+          // ── LIST ROW ───────────────────────────────────────────
+          return `
+            <div class="row">
+              <img src="${user.photo}" alt="${user.name}" />
+              <div class="row-info">
+                <h3>${user.name}</h3>
+                <div class="username">@${user.username}</div>
+                <div class="company">${user.company}</div>
+              </div>
+              <div class="row-meta">
+                ${user.email}<br/>
+                📞 ${user.phone}<br/>
+                📍 ${user.state}, ${user.country}
+              </div>
+            </div>`;
+        }
+
+      }).join('');   // join turns ['<div>...</div>', '<div>...'] → one string
+    }
+
+
+    // =================================================================
+    // FUNCTION: switchView(view)
+    //
+    // WHAT  — Switches between Grid and List layout.
+    // WHY   — Re-renders from the cached usersData array, so
+    //         NO extra network request is made.
+    // =================================================================
+    function switchView(view) {
+      currentView = view;
+
+      // Update button highlight
+      document.getElementById('btn-grid').classList.toggle('active', view === 'grid');
+      document.getElementById('btn-list').classList.toggle('active', view === 'list');
+
+      // Only re-render if data already exists
+      if (usersData.length > 0) {
+        renderUsers(usersData, view);
+      }
+    }
+    document.getElementById("search")
+.addEventListener("input", function(){
+
+const searchText =
+this.value.toLowerCase();
+
+const filteredUsers =
+usersData.filter(user =>
+user.name
+.toLowerCase()
+.includes(searchText)
+);
+
+renderUsers(filteredUsers,currentView);
+
+});
+
+
+    // ─────────────────────────────────────────────────────────────────
+    // ENTRY POINT
+    //
+    // Called immediately when the browser parses this <script> block.
+    // This is what kicks off the whole data-loading process.
+    // ─────────────────────────────────────────────────────────────────
+    fetchUsers();
+
+  </script>
+</body>
+</html>
